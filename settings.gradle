@@ -1,0 +1,6 @@
+rootProject.name = 'bondary-backend'
+
+include(':bootstrap-module')
+include(':application-module')
+include(':domain-module')
+include(':infrastructure-module')
