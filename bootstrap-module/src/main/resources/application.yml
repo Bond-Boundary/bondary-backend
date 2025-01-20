@@ -1,0 +1,28 @@
+spring:
+  config:
+    import: 'aws-parameterstore:'
+
+aws:
+  paramstore:
+    enabled: true
+    prefix: /bondary
+    profile-separator: _
+    name: db
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: was1
+  datasource:
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
