@@ -1,14 +1,6 @@
 spring:
   config:
-    import: 'aws-parameterstore:'
-
-aws:
-  paramstore:
-    enabled: true
-    prefix: /bondary
-    profile-separator: _
-    name: db
-
+    import: aws-parameterstore:/bondary/db_was1/
 
 ---
 spring:
