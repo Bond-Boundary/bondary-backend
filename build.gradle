@@ -43,7 +43,7 @@ subprojects {
 	}
 
 	tasks.withType(BootJar) {
-		enabled = project.name == 'bootstrap-module'
+		enabled = project.name == 'bootstrap-module' || project.name == 'socket-module'
 	}
 
 	tasks.withType(Jar) {
