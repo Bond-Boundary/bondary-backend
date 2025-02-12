@@ -10,7 +10,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 
 @Configuration
 @EnableRedisRepositories(
-    basePackages = ["com.bondary.repository"],
+    basePackages = ["com.bondary.repository"]
 )
 class RedisConfig {
     @Bean

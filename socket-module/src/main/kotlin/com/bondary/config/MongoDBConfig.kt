@@ -16,7 +16,7 @@ class MongoDBConfig {
     @Bean
     fun reactiveMongoDatabaseFactory(
         mongoClient: MongoClient,
-        properties: MongoProperties,
+        properties: MongoProperties
     ): SimpleReactiveMongoDatabaseFactory {
         return SimpleReactiveMongoDatabaseFactory(mongoClient, properties.database)
     }

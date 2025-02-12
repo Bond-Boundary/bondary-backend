@@ -9,5 +9,5 @@ data class Chat(
     val id: String? = null,
     val title: String,
     val thumbnailId: Long,
-    val userIds: List<Long>,
+    val userIds: List<Long>
 )

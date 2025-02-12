@@ -13,5 +13,5 @@ data class Message(
     val receiverId: Long,
     val text: String,
     val timestamp: LocalDateTime = LocalDateTime.now(),
-    val isRead: Boolean = false,
+    val isRead: Boolean = false
 )
