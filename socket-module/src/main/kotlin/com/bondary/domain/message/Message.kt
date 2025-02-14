@@ -1,4 +1,4 @@
-package com.bondary.entity
+package com.bondary.domain.message
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 data class Message(
     @Id
     val id: String? = null,
-    val chatId: Long,
-    val senderId: Long,
-    val receiverId: Long,
-    val text: String,
+    val chatId: String,
+    val senderId: String,
+    val messageType: MessageType,
     val timestamp: LocalDateTime = LocalDateTime.now(),
-    val isRead: Boolean = false
+    val isRead: Boolean = false,
+    val payload: MessagePayload
 )
