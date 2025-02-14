@@ -27,7 +27,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
 
     // AWS
-    implementation("aws.sdk.kotlin:s3:1.0.0")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-parameter-store")
+    implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0"))
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
