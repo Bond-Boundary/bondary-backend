@@ -1,28 +1,21 @@
-package com.bondary.config
+package com.chat.config
 
-import com.bondary.handler.ChatWebSocketHandler
-import org.springframework.context.annotation.Bean
+import com.bondary.websocket.ChatWebSocketHandler
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.reactive.HandlerMapping
-import org.springframework.web.reactive.config.EnableWebFlux
-import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping
-import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter
+import org.springframework.web.socket.config.annotation.EnableWebSocket
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
-@EnableWebFlux
-class WebSocketConfig {
-    @Bean
-    fun webSocketHandlerMapping(chatWebSocketHandler: ChatWebSocketHandler): HandlerMapping {
-        val map = mapOf("/ws/chat" to chatWebSocketHandler)
+@ComponentScan(basePackages = ["com.bondary.websocket"])
+@EnableWebSocket
+class WebSocketConfig(
+    private val chatWebSocketHandler: ChatWebSocketHandler
+) : WebSocketConfigurer {
 
-        val handlerMapping = SimpleUrlHandlerMapping()
-        handlerMapping.urlMap = map
-        handlerMapping.order = -1
-        return handlerMapping
-    }
-
-    @Bean
-    fun webSocketHandlerAdapter(): WebSocketHandlerAdapter {
-        return WebSocketHandlerAdapter()
+    override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
+        registry.addHandler(chatWebSocketHandler, "/ws/chat")
+            .setAllowedOrigins("*")
     }
 }

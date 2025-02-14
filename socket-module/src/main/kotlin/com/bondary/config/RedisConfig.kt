@@ -1,34 +1,28 @@
 package com.bondary.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory
-import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
-import org.springframework.data.redis.serializer.StringRedisSerializer
+import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate
 
 @Configuration
-@EnableRedisRepositories(
-    basePackages = ["com.bondary.repository"]
-)
 class RedisConfig {
+
+    @Value("\${redis.host}")
+    private lateinit var redisHost: String
+
+    @Value("\${redis.port}")
+    private lateinit var redisPort: String
+
     @Bean
-    fun redisConnectionFactory(): LettuceConnectionFactory {
-        return LettuceConnectionFactory()
+    fun reactiveRedisConnectionFactory(): ReactiveRedisConnectionFactory {
+        return LettuceConnectionFactory(redisHost, redisPort.toInt())
     }
 
     @Bean
-    fun redisTemplate(redisConnectionFactory: LettuceConnectionFactory): RedisTemplate<String, Any> {
-        val template = RedisTemplate<String, Any>()
-        template.connectionFactory = redisConnectionFactory
-
-        template.keySerializer = StringRedisSerializer()
-        template.hashKeySerializer = StringRedisSerializer()
-
-        template.valueSerializer = GenericJackson2JsonRedisSerializer()
-        template.hashValueSerializer = GenericJackson2JsonRedisSerializer()
-
-        return template
+    fun reactiveStringRedisTemplate(factory: ReactiveRedisConnectionFactory): ReactiveStringRedisTemplate {
+        return ReactiveStringRedisTemplate(factory)
     }
 }
