@@ -1,4 +1,4 @@
-package com.bondary.entity
+package com.bondary.domain.user_chat
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.CompoundIndex
