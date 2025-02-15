@@ -1,6 +1,7 @@
 package com.bondary.domain
 
 import com.bondary.domain.chat.ChatType
+import com.bondary.support.BaseEntity
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -9,11 +10,9 @@ import java.time.LocalDateTime
 data class Chat(
     @Id
     val id: String? = null,
-    val type: ChatType,
-    val lastMessage: LastMessage? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
-) {
+    val chatType: ChatType,
+    val lastMessage: LastMessage? = null
+) : BaseEntity() {
     data class LastMessage(
         val content: String,
         val senderId: Long,

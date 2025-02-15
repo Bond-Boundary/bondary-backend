@@ -8,7 +8,10 @@ import java.util.concurrent.ConcurrentHashMap
 class WebSocketSessionManager {
     private val sessions = ConcurrentHashMap<String, WebSocketSession>()
 
-    fun addSession(userId: String, session: WebSocketSession) {
+    fun addSession(
+        userId: String,
+        session: WebSocketSession
+    ) {
         sessions[userId] = session
     }
 

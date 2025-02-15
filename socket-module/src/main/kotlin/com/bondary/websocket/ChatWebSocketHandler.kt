@@ -20,39 +20,52 @@ class ChatWebSocketHandler(
     private val messageService: MessageService,
     private val fileHandler: ChatFileHandler
 ) : AbstractWebSocketHandler() {
-
     override fun afterConnectionEstablished(session: WebSocketSession) {
         session.getUserId()?.let { userId ->
             sessionManager.addSession(userId, session)
         }
     }
 
-    override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
+    override fun handleTextMessage(
+        session: WebSocketSession,
+        message: TextMessage
+    ) {
         val webSocketMessage = objectMapper.readValue(message.payload, WebSocketMessage::class.java)
         handleWebSocketMessage(session, webSocketMessage)
     }
 
-    override fun handleBinaryMessage(session: WebSocketSession, message: BinaryMessage) {
+    override fun handleBinaryMessage(
+        session: WebSocketSession,
+        message: BinaryMessage
+    ) {
         fileHandler.handleFileUpload(session, message)
     }
 
-    override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
+    override fun afterConnectionClosed(
+        session: WebSocketSession,
+        status: CloseStatus
+    ) {
         session.getUserId()?.let { userId ->
             sessionManager.removeSession(userId)
         }
     }
 
-    private fun handleWebSocketMessage(session: WebSocketSession, webSocketMessage: WebSocketMessage) {
+    private fun handleWebSocketMessage(
+        session: WebSocketSession,
+        webSocketMessage: WebSocketMessage
+    ) {
         when (webSocketMessage) {
             is WebSocketMessage.TextMessage -> {
-                val message = Message(
-                    chatId = webSocketMessage.chatId,
-                    senderId = webSocketMessage.senderId,
-                    messageType = MessageType.TEXT,
-                    payload = MessagePayload.TextPayload(
-                        content = webSocketMessage.content
+                val message =
+                    Message(
+                        chatId = webSocketMessage.chatId,
+                        senderId = webSocketMessage.senderId,
+                        messageType = MessageType.TEXT,
+                        payload =
+                            MessagePayload.TextPayload(
+                                content = webSocketMessage.content,
+                            ),
                     )
-                )
                 messageService.saveMessage(message)
             }
             is WebSocketMessage.FileMessage -> {
@@ -62,20 +75,21 @@ class ChatWebSocketHandler(
                 fileHandler.prepareFileUpload(session, webSocketMessage)
             }
             is WebSocketMessage.SystemMessage -> {
-                val message = Message(
-                    chatId = webSocketMessage.chatId,
-                    senderId = webSocketMessage.senderId,
-                    messageType = MessageType.SYSTEM,
-                    payload = MessagePayload.SystemPayload(
-                        systemMessageType = webSocketMessage.systemMessageType,
-                        content = webSocketMessage.content
+                val message =
+                    Message(
+                        chatId = webSocketMessage.chatId,
+                        senderId = webSocketMessage.senderId,
+                        messageType = MessageType.SYSTEM,
+                        payload =
+                            MessagePayload.SystemPayload(
+                                systemMessageType = webSocketMessage.systemMessageType,
+                                content = webSocketMessage.content,
+                            ),
                     )
-                )
                 messageService.saveMessage(message)
             }
         }
     }
 
-    private fun WebSocketSession.getUserId(): String? =
-        attributes["userId"] as? String
+    private fun WebSocketSession.getUserId(): String? = attributes["userId"] as? String
 }

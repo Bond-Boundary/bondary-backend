@@ -18,28 +18,37 @@ class ChatFileHandler(
 ) {
     private val uploadSessions = ConcurrentHashMap<String, FileUploadSession>()
 
-    fun prepareFileUpload(session: WebSocketSession, message: WebSocketMessage) {
+    fun prepareFileUpload(
+        session: WebSocketSession,
+        message: WebSocketMessage
+    ) {
         val sessionId = createUploadSessionId(session, message)
-        uploadSessions[sessionId] = when (message) {
-            is WebSocketMessage.FileMessage -> FileUploadSession(
-                chatId = message.chatId,
-                senderId = message.senderId,
-                fileName = message.fileName,
-                totalSize = message.fileSize,
-                messageType = MessageType.FILE
-            )
-            is WebSocketMessage.ImageMessage -> FileUploadSession(
-                chatId = message.chatId,
-                senderId = message.senderId,
-                fileName = message.fileName,
-                totalSize = message.fileSize,
-                messageType = MessageType.IMAGE
-            )
-            else -> throw IllegalArgumentException("Invalid message type for file upload")
-        }
+        uploadSessions[sessionId] =
+            when (message) {
+                is WebSocketMessage.FileMessage ->
+                    FileUploadSession(
+                        chatId = message.chatId,
+                        senderId = message.senderId,
+                        fileName = message.fileName,
+                        totalSize = message.fileSize,
+                        messageType = MessageType.FILE,
+                    )
+                is WebSocketMessage.ImageMessage ->
+                    FileUploadSession(
+                        chatId = message.chatId,
+                        senderId = message.senderId,
+                        fileName = message.fileName,
+                        totalSize = message.fileSize,
+                        messageType = MessageType.IMAGE,
+                    )
+                else -> throw IllegalArgumentException("Invalid message type for file upload")
+            }
     }
 
-    fun handleFileUpload(session: WebSocketSession, message: BinaryMessage) {
+    fun handleFileUpload(
+        session: WebSocketSession,
+        message: BinaryMessage
+    ) {
         val sessionId = session.getUserId() ?: return
         val uploadSession = uploadSessions[sessionId] ?: return
 
@@ -55,43 +64,51 @@ class ChatFileHandler(
         }
     }
 
-    private fun createMessage(session: FileUploadSession, fileUrl: String): Message {
-        val payload = when (session.messageType) {
-            MessageType.FILE -> MessagePayload.FilePayload(
-                fileUrl = fileUrl,
-                fileName = session.fileName,
-                fileSize = session.totalSize.toString()
-            )
-            MessageType.IMAGE -> MessagePayload.ImagePayload(
-                imageUrl = fileUrl,
-                thumbnail = null  // 썸네일 생성 로직은 추후 구현
-            )
-            else -> throw IllegalStateException("Invalid message type: ${session.messageType}")
-        }
+    private fun createMessage(
+        session: FileUploadSession,
+        fileUrl: String
+    ): Message {
+        val payload =
+            when (session.messageType) {
+                MessageType.FILE ->
+                    MessagePayload.FilePayload(
+                        fileUrl = fileUrl,
+                        fileName = session.fileName,
+                        fileSize = session.totalSize.toString(),
+                    )
+                MessageType.IMAGE ->
+                    MessagePayload.ImagePayload(
+                        imageUrl = fileUrl,
+                        thumbnail = null, // 썸네일 생성 로직은 추후 구현
+                    )
+                else -> throw IllegalStateException("Invalid message type: ${session.messageType}")
+            }
 
         return Message(
             chatId = session.chatId,
             senderId = session.senderId,
             messageType = session.messageType,
-            payload = payload
+            payload = payload,
         )
     }
 
     private data class FileUploadSession(
-        val chatId: String,
-        val senderId: String,
+        val chatId: Long,
+        val senderId: Long,
         val fileName: String,
         val totalSize: Long,
         val messageType: MessageType,
         val chunks: MutableList<ByteArray> = mutableListOf()
     ) {
         fun isComplete() = chunks.sumOf { it.size } >= totalSize
+
         fun combineChunks(): ByteArray = chunks.reduce { acc, bytes -> acc + bytes }
     }
 
-    private fun createUploadSessionId(session: WebSocketSession, message: WebSocketMessage): String =
-        "${session.getUserId()}_${message.chatId}_${System.currentTimeMillis()}"
+    private fun createUploadSessionId(
+        session: WebSocketSession,
+        message: WebSocketMessage
+    ): String = "${session.getUserId()}_${message.chatId}_${System.currentTimeMillis()}"
 
-    private fun WebSocketSession.getUserId(): String? =
-        attributes["userId"] as? String
+    private fun WebSocketSession.getUserId(): String? = attributes["userId"] as? String
 }
