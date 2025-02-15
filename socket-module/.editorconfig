@@ -11,5 +11,5 @@ trim_trailing_whitespace = true
 no-wildcard-import=enabled
 
 [*.{kt,kts}]
-ij_kotlin_allow_trailing_comma =true
+ij_kotlin_allow_trailing_comma = false
 continuation_indent_size=4

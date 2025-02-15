@@ -1,23 +1,19 @@
 ---
-name: Bug Issue
-about: 프로젝트 버그(에러) 해결 관련 템플릿
+name: Refactor or Fix Issue
+about: 프로젝트 리팩토링 or 에러 해결 관련 템플릿
 title: 'fix: fix title'
 labels: ''
 assignees: ''
 
 ---
 
-#### What is the bug?
+#### AS-IS
 
 - 
 
-#### Under what conditions does the bug occur?
+#### T0-BE
 
-- 
-
-#### Expected Outcome
-
-- 
+-
 
 #### Reference(Optional)
 

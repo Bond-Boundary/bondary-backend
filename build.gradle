@@ -16,12 +16,6 @@ allprojects {
 
 	sourceCompatibility = project.javaVersion
 	targetCompatibility = project.javaVersion
-
-	dependencyManagement {
-		imports {
-			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0"
-		}
-	}
 }
 
 subprojects {
@@ -29,10 +23,16 @@ subprojects {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 
+	dependencyManagement {
+		imports {
+			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0"
+		}
+	}
+
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter'
 
-		//AWS
+		// AWS
 		implementation "io.awspring.cloud:spring-cloud-aws-starter"
 		implementation "io.awspring.cloud:spring-cloud-aws-starter-s3"
 		implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
