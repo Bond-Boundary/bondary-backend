@@ -32,4 +32,16 @@ sealed class WebSocketMessage {
         val systemMessageType: SystemMessageType,
         val content: String
     ) : WebSocketMessage()
+
+    data class PingMessage(
+        override val chatId: Long,
+        override val senderId: Long,
+        val timestamp: Long = System.currentTimeMillis()
+    ) : WebSocketMessage()
+
+    data class PongMessage(
+        override val chatId: Long,
+        override val senderId: Long,
+        val pingTimestamp: Long
+    ) : WebSocketMessage()
 }
