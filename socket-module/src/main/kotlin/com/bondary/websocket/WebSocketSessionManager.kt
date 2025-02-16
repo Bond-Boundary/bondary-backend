@@ -22,4 +22,8 @@ class WebSocketSessionManager {
     fun getSession(userId: Long): WebSocketSession? {
         return sessions[userId]
     }
+
+    fun getAllSessions(): Map<Long, WebSocketSession> {
+        return sessions.toMap()
+    }
 }
