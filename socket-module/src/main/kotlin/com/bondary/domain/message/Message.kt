@@ -13,6 +13,6 @@ data class Message(
     val senderId: Long,
     val messageType: MessageType,
     val timestamp: LocalDateTime = LocalDateTime.now(),
-    val isRead: Boolean = false,
+    var isRead: Boolean = false,
     val payload: MessagePayload
 ) : BaseEntity()

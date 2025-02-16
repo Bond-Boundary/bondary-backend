@@ -15,6 +15,6 @@ data class UserChat(
     val id: String? = null,
     val chatId: Long,
     val userId: Long,
-    val mute: Boolean = false,
+    var mute: Boolean = false,
     val displayIdx: String = ""
 ) : BaseEntity()
