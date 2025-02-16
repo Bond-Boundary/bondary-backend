@@ -6,6 +6,9 @@ import com.bondary.domain.message.MessageService
 import com.bondary.domain.message.MessageType
 import com.bondary.websocket.dto.WebSocketMessage
 import com.fasterxml.jackson.databind.ObjectMapper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.BinaryMessage
 import org.springframework.web.socket.CloseStatus
@@ -17,12 +20,28 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler
 class ChatWebSocketHandler(
     private val objectMapper: ObjectMapper,
     private val sessionManager: WebSocketSessionManager,
+    private val serverLocationManager: ServerLocationManager,
     private val messageService: MessageService,
     private val fileHandler: ChatFileHandler
 ) : AbstractWebSocketHandler() {
     override fun afterConnectionEstablished(session: WebSocketSession) {
         session.getUserId()?.let { userId ->
-            sessionManager.addSession(userId, session)
+            CoroutineScope(Dispatchers.IO).launch {
+                sessionManager.addSession(userId, session)
+                serverLocationManager.saveUserServerLocation(userId)
+            }
+        }
+    }
+
+    override fun afterConnectionClosed(
+        session: WebSocketSession,
+        status: CloseStatus
+    ) {
+        session.getUserId()?.let { userId ->
+            CoroutineScope(Dispatchers.IO).launch {
+                sessionManager.removeSession(userId)
+                serverLocationManager.removeUserServerLocation(userId)
+            }
         }
     }
 
@@ -31,7 +50,11 @@ class ChatWebSocketHandler(
         message: TextMessage
     ) {
         val webSocketMessage = objectMapper.readValue(message.payload, WebSocketMessage::class.java)
-        handleWebSocketMessage(session, webSocketMessage)
+        CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.IO).launch {
+                handleWebSocketMessage(session, webSocketMessage)
+            }
+        }
     }
 
     override fun handleBinaryMessage(
@@ -41,16 +64,7 @@ class ChatWebSocketHandler(
         fileHandler.handleFileUpload(session, message)
     }
 
-    override fun afterConnectionClosed(
-        session: WebSocketSession,
-        status: CloseStatus
-    ) {
-        session.getUserId()?.let { userId ->
-            sessionManager.removeSession(userId)
-        }
-    }
-
-    private fun handleWebSocketMessage(
+    private suspend fun handleWebSocketMessage(
         session: WebSocketSession,
         webSocketMessage: WebSocketMessage
     ) {
@@ -68,12 +82,15 @@ class ChatWebSocketHandler(
                     )
                 messageService.saveMessage(message)
             }
+
             is WebSocketMessage.FileMessage -> {
                 fileHandler.prepareFileUpload(session, webSocketMessage)
             }
+
             is WebSocketMessage.ImageMessage -> {
                 fileHandler.prepareFileUpload(session, webSocketMessage)
             }
+
             is WebSocketMessage.SystemMessage -> {
                 val message =
                     Message(
@@ -91,5 +108,5 @@ class ChatWebSocketHandler(
         }
     }
 
-    private fun WebSocketSession.getUserId(): String? = attributes["userId"] as? String
+    private fun WebSocketSession.getUserId(): Long? = attributes["userId"] as? Long
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class ServerLocationManager(
     private val reactiveStringRedisTemplate: ReactiveRedisTemplate<Long, String>,
-    @Value("\${server.host}") private val serverIP: String,
+    @Value("\${server.host}") private val serverIP: String
 ) {
     suspend fun saveUserServerLocation(userId: Long) {
         reactiveStringRedisTemplate.opsForValue()
@@ -23,7 +23,7 @@ class ServerLocationManager(
             .awaitSingleOrNull()
     }
 
-    suspend fun deleteUserServerLocation(userId: Long) {
+    suspend fun removeUserServerLocation(userId: Long) {
         reactiveStringRedisTemplate.opsForValue()
             .delete(userId)
             .awaitSingle()

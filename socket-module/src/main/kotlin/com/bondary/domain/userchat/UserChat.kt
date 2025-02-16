@@ -1,4 +1,4 @@
-package com.bondary.domain.user_chat
+package com.bondary.domain.userchat
 
 import com.bondary.support.BaseEntity
 import org.springframework.data.annotation.Id

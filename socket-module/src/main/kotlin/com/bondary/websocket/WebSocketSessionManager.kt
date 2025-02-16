@@ -6,20 +6,20 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class WebSocketSessionManager {
-    private val sessions = ConcurrentHashMap<String, WebSocketSession>()
+    private val sessions = ConcurrentHashMap<Long, WebSocketSession>()
 
     fun addSession(
-        userId: String,
+        userId: Long,
         session: WebSocketSession
     ) {
         sessions[userId] = session
     }
 
-    fun removeSession(userId: String) {
+    fun removeSession(userId: Long) {
         sessions.remove(userId)
     }
 
-    fun getSession(userId: String): WebSocketSession? {
+    fun getSession(userId: Long): WebSocketSession? {
         return sessions[userId]
     }
 }
