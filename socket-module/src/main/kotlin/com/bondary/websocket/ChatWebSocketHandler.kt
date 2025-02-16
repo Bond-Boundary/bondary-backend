@@ -6,9 +6,7 @@ import com.bondary.domain.message.MessageService
 import com.bondary.domain.message.MessageType
 import com.bondary.websocket.dto.WebSocketMessage
 import com.fasterxml.jackson.databind.ObjectMapper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.BinaryMessage
 import org.springframework.web.socket.CloseStatus
@@ -24,9 +22,11 @@ class ChatWebSocketHandler(
     private val messageService: MessageService,
     private val fileHandler: ChatFileHandler
 ) : AbstractWebSocketHandler() {
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     override fun afterConnectionEstablished(session: WebSocketSession) {
         session.getUserId()?.let { userId ->
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch {
                 sessionManager.addSession(userId, session)
                 serverLocationManager.saveUserServerLocation(userId)
             }
@@ -38,7 +38,7 @@ class ChatWebSocketHandler(
         status: CloseStatus
     ) {
         session.getUserId()?.let { userId ->
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch {
                 sessionManager.removeSession(userId)
                 serverLocationManager.removeUserServerLocation(userId)
             }
@@ -50,10 +50,8 @@ class ChatWebSocketHandler(
         message: TextMessage
     ) {
         val webSocketMessage = objectMapper.readValue(message.payload, WebSocketMessage::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            CoroutineScope(Dispatchers.IO).launch {
-                handleWebSocketMessage(session, webSocketMessage)
-            }
+        scope.launch {
+            handleWebSocketMessage(session, webSocketMessage)
         }
     }
 
@@ -64,11 +62,37 @@ class ChatWebSocketHandler(
         fileHandler.handleFileUpload(session, message)
     }
 
+    private fun startPingScheduler(session: WebSocketSession) {
+        scope.launch {
+            while (session.isOpen) {
+                try {
+                    session.getUserId()?.let { userId ->
+                        val pingMessage =
+                            WebSocketMessage.PingMessage(
+                                chatId = -1,
+                                senderId = userId,
+                                timestamp = System.currentTimeMillis(),
+                            )
+                        session.sendMessage(TextMessage(objectMapper.writeValueAsString(pingMessage)))
+                    }
+                    delay(3000)
+                } catch (e: Exception) {
+                    session.close()
+                    break
+                }
+            }
+        }
+    }
+
     private suspend fun handleWebSocketMessage(
         session: WebSocketSession,
         webSocketMessage: WebSocketMessage
     ) {
         when (webSocketMessage) {
+            is WebSocketMessage.PingMessage -> {}
+            is WebSocketMessage.PongMessage -> {
+                session.getUserId()?.let { userId -> serverLocationManager.updateLastPongTime(userId) }
+            }
             is WebSocketMessage.TextMessage -> {
                 val message =
                     Message(
