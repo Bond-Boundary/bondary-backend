@@ -69,7 +69,6 @@ class ChatWebSocketHandler(
                     session.getUserId()?.let { userId ->
                         val pingMessage =
                             WebSocketMessage.PingMessage(
-                                chatId = -1,
                                 senderId = userId,
                                 timestamp = System.currentTimeMillis(),
                             )
@@ -89,8 +88,13 @@ class ChatWebSocketHandler(
         webSocketMessage: WebSocketMessage
     ) {
         when (webSocketMessage) {
+            is WebSocketMessage.ReadMessage -> {}
             is WebSocketMessage.PingMessage -> {}
             is WebSocketMessage.PongMessage -> {
+//                val roundTripTime = System.currentTimeMillis() - webSocketMessage.pingTimestamp
+//                if (roundTripTime > 5000) { // 5초 이상 걸리면 로그
+//                    logger.warn("High latency detected: ${roundTripTime}ms")
+//                }
                 session.getUserId()?.let { userId -> serverLocationManager.updateLastPongTime(userId) }
             }
             is WebSocketMessage.TextMessage -> {
