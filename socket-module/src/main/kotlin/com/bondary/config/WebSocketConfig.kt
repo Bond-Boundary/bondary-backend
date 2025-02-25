@@ -1,14 +1,12 @@
-package com.chat.config
+package com.bondary.config
 
 import com.bondary.websocket.ChatWebSocketHandler
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 @Configuration
-@ComponentScan(basePackages = ["com.bondary.websocket"])
 @EnableWebSocket
 class WebSocketConfig(
     private val chatWebSocketHandler: ChatWebSocketHandler
