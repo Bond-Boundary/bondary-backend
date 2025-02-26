@@ -11,7 +11,7 @@ data class Chat(
     @Id
     val id: String? = null,
     val chatType: ChatType,
-    val lastMessage: LastMessage? = null
+    var lastMessage: LastMessage? = null
 ) : BaseEntity() {
     data class LastMessage(
         val content: String,
