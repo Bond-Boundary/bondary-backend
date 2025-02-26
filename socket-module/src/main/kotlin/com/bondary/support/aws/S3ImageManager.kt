@@ -5,6 +5,8 @@ import io.awspring.cloud.s3.S3Template
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 
 @Component
@@ -46,14 +48,5 @@ class S3ImageManager(
     }
 
     private fun getContentType(fileName: String): String =
-        when (fileName.substringAfterLast('.', "").lowercase()) {
-            "jpg", "jpeg" -> "image/jpeg"
-            "png" -> "image/png"
-            "gif" -> "image/gif"
-            "pdf" -> "application/pdf"
-            "doc", "docx" -> "application/msword"
-            "xls", "xlsx" -> "application/vnd.ms-excel"
-            "txt" -> "text/plain"
-            else -> "application/octet-stream"
-        }
+        Files.probeContentType(Paths.get(fileName)) ?: "application/octet-stream"
 }

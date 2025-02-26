@@ -45,7 +45,7 @@ class ChatFileHandler(
             }
     }
 
-    fun handleFileUpload(
+    suspend fun handleFileUpload(
         session: WebSocketSession,
         message: BinaryMessage
     ) {
@@ -58,8 +58,8 @@ class ChatFileHandler(
             val fileData = uploadSession.combineChunks()
             val fileUrl = s3ImageManager.uploadFile(fileData, uploadSession.fileName)
 
-            val domainMessage = createMessage(uploadSession, fileUrl)
-            messageService.saveMessage(domainMessage)
+            val message = createMessage(uploadSession, fileUrl)
+            messageService.saveAndSendMessage(message)
             uploadSessions.remove(sessionId)
         }
     }
@@ -68,32 +68,30 @@ class ChatFileHandler(
         session: FileUploadSession,
         fileUrl: String
     ): Message {
-        val payload =
-            when (session.messageType) {
-                MessageType.FILE ->
-                    MessagePayload.FilePayload(
-                        fileUrl = fileUrl,
-                        fileName = session.fileName,
-                        fileSize = session.totalSize.toString(),
-                    )
-                MessageType.IMAGE ->
-                    MessagePayload.ImagePayload(
-                        imageUrl = fileUrl,
-                        thumbnail = null, // 썸네일 생성 로직은 추후 구현
-                    )
-                else -> throw IllegalStateException("Invalid message type: ${session.messageType}")
-            }
-
         return Message(
             chatId = session.chatId,
             senderId = session.senderId,
             messageType = session.messageType,
-            payload = payload,
+            payload =
+                when (session.messageType) {
+                    MessageType.FILE ->
+                        MessagePayload.FilePayload(
+                            fileUrl = fileUrl,
+                            fileName = session.fileName,
+                            fileSize = session.totalSize.toString(),
+                        )
+                    MessageType.IMAGE ->
+                        MessagePayload.ImagePayload(
+                            imageUrl = fileUrl,
+                            thumbnail = null,
+                        )
+                    else -> throw IllegalStateException("Invalid message type: ${session.messageType}")
+                },
         )
     }
 
     private data class FileUploadSession(
-        val chatId: Long,
+        val chatId: String,
         val senderId: Long,
         val fileName: String,
         val totalSize: Long,

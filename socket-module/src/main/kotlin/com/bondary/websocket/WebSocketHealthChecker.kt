@@ -42,7 +42,8 @@ class WebSocketHealthChecker(
     }
 
     @PreDestroy
-    fun destroy() {
+    fun shutdown() {
         scope.cancel()
     }
+
 }
