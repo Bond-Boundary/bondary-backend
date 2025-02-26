@@ -6,15 +6,19 @@ import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.index.CompoundIndexes
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "messages")
+@Document(collection = "user_chats")
 @CompoundIndexes(
-    CompoundIndex(name = "chat_user_idx", def = "{'chatId': 1, 'userId': 1}"),
+    CompoundIndex(
+        name = "chat_user_idx",
+        def = "{'chatId': 1, 'userId': 1}",
+        unique = true,
+    ),
 )
 data class UserChat(
     @Id
     val id: String? = null,
-    val chatId: Long,
+    val chatId: String,
     val userId: Long,
     var mute: Boolean = false,
-    val displayIdx: String = ""
+    var displayIdx: String = ""
 ) : BaseEntity()
