@@ -20,4 +20,9 @@ sealed interface MessagePayload {
         val systemMessageType: SystemMessageType,
         val content: String
     ) : MessagePayload
+
+    data class ReadPayload(
+        val messageIds: List<String> = emptyList(),
+        val content: String = "메시지를 읽었습니다"
+    ) : MessagePayload
 }

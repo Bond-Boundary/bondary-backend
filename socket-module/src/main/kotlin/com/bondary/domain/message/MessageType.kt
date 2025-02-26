@@ -2,7 +2,10 @@ package com.bondary.domain.message
 
 enum class MessageType {
     TEXT,
-    IMAGE,
     FILE,
-    SYSTEM
+    IMAGE,
+    SYSTEM,
+    PING,
+    PONG,
+    READ
 }
