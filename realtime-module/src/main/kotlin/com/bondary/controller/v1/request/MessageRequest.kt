@@ -5,8 +5,8 @@ import com.bondary.model.MessageType
 
 data class MessageRequest(
     val chatId: String,
-    val senderId: String,
-    val receiverId: String,
+    val senderId: Long,
+    val receiverId: Long,
     val content: String,
     var type: String = "TEXT"
 ) {

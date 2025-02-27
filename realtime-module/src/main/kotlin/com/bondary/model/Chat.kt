@@ -8,7 +8,7 @@ data class Chat(
     @Id
     val id: String? = null,
     val chatId: String,
-    val participants: List<String>,
+    val participants: List<Long>,
     var title: String? = null,
     var thumbnail: String? = null
 )

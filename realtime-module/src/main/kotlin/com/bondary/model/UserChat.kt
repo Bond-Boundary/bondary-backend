@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class UserChat(
     @Id
     val id: String? = null,
-    val userId: String,
+    val userId: Long,
     val chatId: String,
     val unreadCount: Int = 0,
     var isMuted: Boolean = false,

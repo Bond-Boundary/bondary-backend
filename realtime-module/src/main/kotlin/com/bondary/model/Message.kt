@@ -9,8 +9,8 @@ data class Message(
     @Id
     val id: String? = null,
     val chatId: String,
-    val senderId: String,
-    val receiverId: String,
+    val senderId: Long,
+    val receiverId: Long,
     val content: String,
     var type: MessageType = MessageType.TEXT,
     val timestamp: Instant = Instant.now()
