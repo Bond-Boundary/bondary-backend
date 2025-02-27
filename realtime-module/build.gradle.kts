@@ -10,27 +10,26 @@ repositories {
 
 dependencies {
     // Spring Boot
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
 
-    // DB
+    // MongoDB Reactive
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 
-    // Kotlin
+    // Redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // Validation, Jackson, Kotlin
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    // Coroutines
+    // Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-slf4j")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-
-    // WEBFLUX
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     // AWS
     implementation("io.awspring.cloud:spring-cloud-aws-starter")
@@ -42,6 +41,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
     testImplementation("io.mockk:mockk:1.13.9")
+    testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
+
 }
 
 kotlin {
