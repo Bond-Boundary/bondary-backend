@@ -2,8 +2,8 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.1'
-	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.springframework.boot' version "${springBootVersion}"
+	id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
 }
 
 allprojects {
@@ -16,12 +16,6 @@ allprojects {
 
 	sourceCompatibility = project.javaVersion
 	targetCompatibility = project.javaVersion
-
-	dependencyManagement {
-		imports {
-			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0"
-		}
-	}
 }
 
 subprojects {
@@ -29,11 +23,21 @@ subprojects {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 
+	dependencyManagement {
+		imports {
+			mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0"
+		}
+	}
+
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter'
-		implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0")
+
+		// AWS
+		implementation "io.awspring.cloud:spring-cloud-aws-starter"
+		implementation "io.awspring.cloud:spring-cloud-aws-starter-s3"
 		implementation 'io.awspring.cloud:spring-cloud-aws-starter-parameter-store'
 
+		// TEST
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	}
@@ -43,10 +47,11 @@ subprojects {
 	}
 
 	tasks.withType(BootJar) {
-		enabled = project.name == 'bootstrap-module'
+		enabled = project.name == 'bootstrap-module' && project.name == 'realtime-module'
 	}
 
 	tasks.withType(Jar) {
 		enabled = project.name != 'bootstrap-module'
+		enabled = project.name != 'realtime-module'
 	}
 }
