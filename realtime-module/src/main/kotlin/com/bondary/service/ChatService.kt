@@ -1,20 +1,34 @@
 package com.bondary.service
 
-import com.bondary.model.Message
-import com.bondary.repository.MessageRepository
-import kotlinx.coroutines.reactor.awaitSingle
+import com.bondary.model.Chat
+import com.bondary.model.ChatType
+import kotlinx.coroutines.coroutineScope
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class ChatService(
-    private val messageRepository: MessageRepository
+    private val chatFinder: ChatFinder,
+    private val chatCreator: ChatCreator,
+    private val userChatCreator: UserChatCreator
 ) {
-    /**
-     * 메시지 처리 로직
-     * - DB에 메시지 저장 (ex: MongoDB bulkWrite)
-     * - 추가 알림 처리 등 비즈니스 로직 수행
-     */
-    suspend fun processMessage(message: Message) : Message{
-        return messageRepository.save(message).awaitSingle()
+    private val logger = LoggerFactory.getLogger(ChatService::class.java)
+
+    suspend fun createChat(
+        senderId: Long,
+        receiverId: Long,
+        chatType: ChatType
+    ): Chat = coroutineScope {
+        val existing = chatFinder.getExistingChat(senderId, receiverId)
+        if (existing != null) {
+            logger.info("기존 채팅방 발견: ${existing.id}")
+            return@coroutineScope existing
+        }
+
+        val created = chatCreator.createChat(senderId, receiverId, chatType)
+        logger.info("새로운 채팅방 생성: ${created.id}")
+
+        userChatCreator.createUserEntries(created, senderId, receiverId)
+        return@coroutineScope created
     }
 }
