@@ -13,5 +13,5 @@ data class UserChat(
     val unreadCount: Int = 0,
     var isMuted: Boolean = false,
     var displayIndex: String? = null,
-    val updatedAt: Instant = Instant.now()
+    val updatedAt: Instant = Instant.now(),
 )

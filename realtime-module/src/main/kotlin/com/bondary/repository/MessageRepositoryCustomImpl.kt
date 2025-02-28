@@ -12,13 +12,16 @@ import reactor.core.publisher.Mono
 
 @Repository
 class MessageRepositoryCustomImpl(
-    private val reactiveMongoTemplate: ReactiveMongoTemplate
+    private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : MessageRepositoryCustom {
-
-    override fun findByChatId(chatId: String, limit: Int): Flux<Message> {
-        val query = Query(Criteria.where("chatId").`is`(chatId))
-            .with(Sort.by(Sort.Direction.DESC, "timestamp"))
-            .limit(limit)
+    override fun findByChatId(
+        chatId: String,
+        limit: Int,
+    ): Flux<Message> {
+        val query =
+            Query(Criteria.where("chatId").`is`(chatId))
+                .with(Sort.by(Sort.Direction.DESC, "timestamp"))
+                .limit(limit)
         return reactiveMongoTemplate.find(query, Message::class.java)
     }
 

@@ -14,5 +14,5 @@ data class Chat(
     var title: String? = null,
     var thumbnail: String? = null,
     val createdAt: Instant = Instant.now(),
-    val updatedAt: Instant = Instant.now()
+    val updatedAt: Instant = Instant.now(),
 )

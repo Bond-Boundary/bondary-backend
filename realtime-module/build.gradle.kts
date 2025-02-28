@@ -41,7 +41,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
     testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
-
 }
 
 kotlin {

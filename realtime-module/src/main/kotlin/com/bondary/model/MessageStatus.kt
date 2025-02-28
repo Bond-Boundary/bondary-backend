@@ -1,5 +1,6 @@
 package com.bondary.model
 
 enum class MessageStatus {
-    SENT, READ
+    SENT,
+    READ,
 }

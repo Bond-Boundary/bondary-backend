@@ -12,14 +12,14 @@ import java.time.Instant
 
 @Component
 class UserChatCreator(
-    private val userChatRepository: UserChatRepository
+    private val userChatRepository: UserChatRepository,
 ) {
     private val logger = LoggerFactory.getLogger(UserChatCreator::class.java)
 
     suspend fun createUserEntries(
         chat: Chat,
         senderId: Long,
-        receiverId: Long
+        receiverId: Long,
     ) = coroutineScope {
         val chatId = chat.id!!
         val createEntry: suspend (Long) -> Unit = { userId ->
@@ -28,8 +28,8 @@ class UserChatCreator(
                     userId = userId,
                     chatId = chatId,
                     displayIndex = "init", // 이후에는 displayIdx가 최근 message id로 update
-                    updatedAt = Instant.now()
-                )
+                    updatedAt = Instant.now(),
+                ),
             ).awaitFirst()
         }
         val deferredBySender = async { createEntry(senderId) }

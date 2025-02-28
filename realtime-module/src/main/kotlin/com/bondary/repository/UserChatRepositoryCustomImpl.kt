@@ -11,12 +11,17 @@ import reactor.core.publisher.Mono
 
 @Repository
 class UserChatRepositoryCustomImpl(
-    private val reactiveMongoTemplate: ReactiveMongoTemplate
+    private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : UserChatRepositoryCustom {
-
-    override fun findByUserIdAndChatId(userId: Long, chatId: String): Mono<UserChat> {
-        val query = Query(Criteria.where("userId").`is`(userId)
-            .and("chatId").`is`(chatId))
+    override fun findByUserIdAndChatId(
+        userId: Long,
+        chatId: String,
+    ): Mono<UserChat> {
+        val query =
+            Query(
+                Criteria.where("userId").`is`(userId)
+                    .and("chatId").`is`(chatId),
+            )
         return reactiveMongoTemplate.findOne(query, UserChat::class.java)
     }
 
@@ -25,25 +30,44 @@ class UserChatRepositoryCustomImpl(
         return reactiveMongoTemplate.find(query, UserChat::class.java)
     }
 
-    override fun incrementUnreadCount(userId: Long, chatId: String): Mono<Boolean> {
-        val query = Query(Criteria.where("userId").`is`(userId)
-            .and("chatId").`is`(chatId))
+    override fun incrementUnreadCount(
+        userId: Long,
+        chatId: String,
+    ): Mono<Boolean> {
+        val query =
+            Query(
+                Criteria.where("userId").`is`(userId)
+                    .and("chatId").`is`(chatId),
+            )
         val update = Update().inc("unreadCount", 1)
         return reactiveMongoTemplate.updateFirst(query, update, UserChat::class.java)
             .map { it.modifiedCount > 0 }
     }
 
-    override fun resetUnreadCount(userId: Long, chatId: String): Mono<Boolean> {
-        val query = Query(Criteria.where("userId").`is`(userId)
-            .and("chatId").`is`(chatId))
+    override fun resetUnreadCount(
+        userId: Long,
+        chatId: String,
+    ): Mono<Boolean> {
+        val query =
+            Query(
+                Criteria.where("userId").`is`(userId)
+                    .and("chatId").`is`(chatId),
+            )
         val update = Update().set("unreadCount", 0)
         return reactiveMongoTemplate.updateFirst(query, update, UserChat::class.java)
             .map { it.modifiedCount > 0 }
     }
 
-    override fun updateDisplayIndex(userId: Long, chatId: String, displayIndex: String): Mono<Boolean> {
-        val query = Query(Criteria.where("userId").`is`(userId)
-            .and("chatId").`is`(chatId))
+    override fun updateDisplayIndex(
+        userId: Long,
+        chatId: String,
+        displayIndex: String,
+    ): Mono<Boolean> {
+        val query =
+            Query(
+                Criteria.where("userId").`is`(userId)
+                    .and("chatId").`is`(chatId),
+            )
         val update = Update().set("displayIndex", displayIndex)
         return reactiveMongoTemplate.updateFirst(query, update, UserChat::class.java)
             .map { it.modifiedCount > 0 }

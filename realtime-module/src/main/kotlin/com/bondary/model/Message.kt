@@ -16,5 +16,5 @@ data class Message(
     var type: MessageType = MessageType.TEXT,
     var messageStatus: MessageStatus = MessageStatus.SENT,
     var metadata: Map<String, Any> = emptyMap(),
-    val createdAt: Instant = Instant.now()
+    val createdAt: Instant = Instant.now(),
 )

@@ -11,15 +11,17 @@ import reactor.core.publisher.Mono
 
 @Repository
 class ChatRepositoryCustomImpl(
-    private val reactiveMongoTemplate: ReactiveMongoTemplate
+    private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : ChatRepositoryCustom {
-
     override fun findByParticipants(userId: Long): Flux<Chat> {
         val query = Query(Criteria.where("participants").`in`(userId))
         return reactiveMongoTemplate.find(query, Chat::class.java)
     }
 
-    override fun updateLastMessage(chatId: String, lastMessage: String): Mono<Boolean> {
+    override fun modifyLastMessage(
+        chatId: String,
+        lastMessage: String,
+    ): Mono<Boolean> {
         val query = Query(Criteria.where("_id").`is`(chatId))
         val update = Update().set("lastMessage", lastMessage)
         return reactiveMongoTemplate.updateFirst(query, update, Chat::class.java)

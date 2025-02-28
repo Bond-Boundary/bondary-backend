@@ -6,5 +6,5 @@ import reactor.core.publisher.Mono
 
 interface ChatRepositoryCustom {
     fun findByParticipants(userId: Long): Flux<Chat>
-    fun updateLastMessage(chatId: String, lastMessage: String): Mono<Boolean>
+    fun modifyLastMessage(chatId: String, lastMessage: String): Mono<Boolean>
 }
