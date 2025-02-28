@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class ChatFinder(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
 ) {
-    suspend fun getExistingChat(
+    suspend fun findExistingChat(
         senderId: Long,
-        receiverId: Long
+        receiverId: Long,
     ): Chat? {
         return chatRepository.findByParticipants(senderId)
             .filter { chat ->
@@ -20,5 +20,9 @@ class ChatFinder(
             .collectList()
             .awaitFirstOrNull()
             ?.firstOrNull()
+    }
+
+    suspend fun findChat(chatId: String): Chat? {
+        return chatRepository.findById(chatId).awaitFirstOrNull()
     }
 }
