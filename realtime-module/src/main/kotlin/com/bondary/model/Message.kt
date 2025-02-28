@@ -12,6 +12,9 @@ data class Message(
     val senderId: Long,
     val receiverId: Long,
     val content: String,
+    var isRead: Boolean = false,
     var type: MessageType = MessageType.TEXT,
-    val timestamp: Instant = Instant.now()
+    var messageStatus: MessageStatus = MessageStatus.SENT,
+    var metadata: Map<String, Any> = emptyMap(),
+    val createdAt: Instant = Instant.now()
 )

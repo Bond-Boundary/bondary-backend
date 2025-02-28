@@ -2,6 +2,7 @@ package com.bondary.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
+import java.time.Instant
 
 @Document(collection = "user_chat")
 data class UserChat(
@@ -11,5 +12,6 @@ data class UserChat(
     val chatId: String,
     val unreadCount: Int = 0,
     var isMuted: Boolean = false,
-    var displayIndex: String? = null
+    var displayIndex: String? = null,
+    val updatedAt: Instant = Instant.now()
 )
