@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ChatService(
-    private val chatFinder: ChatFinder,
+    private val chatReader: ChatReader,
     private val chatCreator: ChatCreator,
     private val chatModifier: ChatModifier,
     private val userChatCreator: UserChatCreator,
@@ -21,7 +21,7 @@ class ChatService(
             val senderId = chat.participants[0]
             val receiverId = chat.participants[1]
 
-            val existing = chatFinder.findExistingChat(senderId, receiverId)
+            val existing = chatReader.findExistingChat(senderId, receiverId)
             if (existing != null) {
                 logger.info("기존 채팅방 발견: ${existing.id}")
                 return@coroutineScope existing
@@ -35,6 +35,6 @@ class ChatService(
         }
 
     suspend fun findChat(chatId: String): Chat? {
-        return chatFinder.findChat(chatId)
+        return chatReader.findChat(chatId)
     }
 }

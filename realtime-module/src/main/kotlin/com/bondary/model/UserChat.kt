@@ -10,8 +10,9 @@ data class UserChat(
     val id: String? = null,
     val userId: Long,
     val chatId: String,
+    val chatTitle: String,
     val unreadCount: Int = 0,
     var isMuted: Boolean = false,
-    var displayIndex: String? = null,
+    var displayIndex: String,
     val updatedAt: Instant = Instant.now(),
 )

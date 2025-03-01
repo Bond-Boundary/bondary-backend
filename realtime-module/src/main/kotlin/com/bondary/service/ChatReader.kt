@@ -6,7 +6,7 @@ import kotlinx.coroutines.reactive.awaitFirstOrNull
 import org.springframework.stereotype.Component
 
 @Component
-class ChatFinder(
+class ChatReader(
     private val chatRepository: ChatRepository,
 ) {
     suspend fun findExistingChat(
