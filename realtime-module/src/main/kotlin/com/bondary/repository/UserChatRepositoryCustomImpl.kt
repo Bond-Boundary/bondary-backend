@@ -14,8 +14,8 @@ class UserChatRepositoryCustomImpl(
     private val reactiveMongoTemplate: ReactiveMongoTemplate,
 ) : UserChatRepositoryCustom {
     override fun findByUserIdAndChatId(
-        userId: Long,
         chatId: String,
+        userId: Long,
     ): Mono<UserChat> {
         val query =
             Query(
@@ -31,8 +31,8 @@ class UserChatRepositoryCustomImpl(
     }
 
     override fun incrementUnreadCount(
-        userId: Long,
         chatId: String,
+        userId: Long,
     ): Mono<Boolean> {
         val query =
             Query(
@@ -45,8 +45,8 @@ class UserChatRepositoryCustomImpl(
     }
 
     override fun resetUnreadCount(
-        userId: Long,
         chatId: String,
+        userId: Long,
     ): Mono<Boolean> {
         val query =
             Query(
@@ -59,8 +59,8 @@ class UserChatRepositoryCustomImpl(
     }
 
     override fun updateDisplayIndex(
-        userId: Long,
         chatId: String,
+        userId: Long,
         displayIndex: String,
     ): Mono<Boolean> {
         val query =

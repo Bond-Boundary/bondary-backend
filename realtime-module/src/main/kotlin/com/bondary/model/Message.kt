@@ -13,7 +13,7 @@ data class Message(
     val receiverId: Long,
     val content: String,
     var isRead: Boolean = false,
-    var type: MessageType = MessageType.TEXT,
+    var messageType: MessageType = MessageType.TEXT,
     var messageStatus: MessageStatus = MessageStatus.SENT,
     var metadata: Map<String, Any> = emptyMap(),
     val createdAt: Instant = Instant.now(),

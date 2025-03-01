@@ -12,7 +12,7 @@ class UserChatProcessor(
         receiverId: Long,
         chatId: String,
     ) {
-        userChatRepository.incrementUnreadCount(receiverId, chatId).awaitFirst()
+        userChatRepository.incrementUnreadCount(chatId, receiverId).awaitFirst()
     }
 
     suspend fun updateDisplayIndex(
@@ -20,6 +20,6 @@ class UserChatProcessor(
         chatId: String,
         messageId: String,
     ) {
-        userChatRepository.updateDisplayIndex(receiverId, chatId, messageId).awaitFirst()
+        userChatRepository.updateDisplayIndex(chatId, receiverId, messageId).awaitFirst()
     }
 }
