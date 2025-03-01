@@ -1,28 +1,31 @@
 package com.bondary.controller.v1
 
-import com.bondary.controller.v1.request.MessageRequest
-import com.bondary.controller.v1.response.MessageResponse
+import com.bondary.controller.v1.request.CreateChatRequest
+import com.bondary.controller.v1.response.ChatResponse
 import com.bondary.service.ChatService
-import kotlinx.coroutines.reactor.mono
-import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.messaging.simp.SimpMessagingTemplate
-import org.springframework.stereotype.Controller
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
-@Controller
+@RestController
+@RequestMapping("/v1/chats")
 class ChatController(
-    private val chatService: ChatService,
-    private val messagingTemplate: SimpMessagingTemplate
+    private val chatService: ChatService
 ) {
-    @MessageMapping("/chat.sendMessage")
-    fun sendMessage(@Payload messageRequest: MessageRequest) = mono {
-        val saved = chatService.processMessage(messageRequest.toDocument())
-        val response = MessageResponse.of(saved)
-        messagingTemplate.convertAndSendToUser(
-            response.receiverId,
-            "/queue/messages",
-            response
-        )
+    @PostMapping
+    suspend fun createChat(
+        @RequestBody request: CreateChatRequest,
+    ): ResponseEntity<ChatResponse> {
+        val created = chatService.createChat(request.toDocument())
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(ChatResponse.from(created))
     }
+
+
+
+
 
 }
