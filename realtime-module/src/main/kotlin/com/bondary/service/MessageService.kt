@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service
 
 @Service
 class MessageService(
+    private val userChatProcessor: UserChatProcessor,
+    private val messageNotifier: MessageNotifier,
+    private val messageModifier: MessageModifier,
     private val messageCreator: MessageCreator,
     private val chatModifier: ChatModifier,
-    private val userChatProcessor: UserChatProcessor,
-    private val messageNotifier: MessageNotifier
 
-    ) {
+) {
     private val logger = LoggerFactory.getLogger(MessageService::class.java)
 
     suspend fun sendMessage(
@@ -50,4 +51,13 @@ class MessageService(
             logger.error("메시지 전송 실패: chatId=$chatId, senderId=$senderId", error)
         }.getOrThrow()
     }
+
+    suspend fun markMessageAsRead(messageId: String): Boolean =
+        messageModifier.markMessageAsRead(messageId)
+
+    suspend fun markAllMessageAsRead(
+        chatId: String,
+        userId: Long,
+    ): Boolean = messageModifier.markAllMessagesAsRead(chatId, userId)
+
 }

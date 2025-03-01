@@ -6,5 +6,9 @@ import reactor.core.publisher.Mono
 
 interface MessageRepositoryCustom {
     fun findByChatId(chatId: String, limit: Int = 50): Flux<Message>
-    fun markAsRead(messageId: String): Mono<Boolean>
+    fun markMessageAsRead(messageId: String): Mono<Boolean>
+    fun markAllMessageAsRead(
+        chatId: String,
+        userId: Long,
+    ): Mono<Boolean>
 }

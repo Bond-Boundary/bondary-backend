@@ -37,12 +37,4 @@ class ChatService(
     suspend fun findChat(chatId: String): Chat? {
         return chatFinder.findChat(chatId)
     }
-
-    suspend fun modifyLastMessage(
-        chatId: String,
-        lastMessage: String,
-    ): Boolean {
-        logger.info("채팅방($chatId)의 마지막 메시지 업데이트: $lastMessage")
-        return chatModifier.modifyLastMessage(chatId, lastMessage)
-    }
 }
