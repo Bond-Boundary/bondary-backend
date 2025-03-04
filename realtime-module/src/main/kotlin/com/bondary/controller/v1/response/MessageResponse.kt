@@ -9,21 +9,23 @@ data class MessageResponse(
     val senderId: Long,
     val receiverId: Long,
     val content: String,
+    val isRead: Boolean,
     val type: String,
-    val timestamp: Instant
+    val timestamp: Instant,
 ) {
     companion object {
-        fun of(message: Message): MessageResponse {
-            return MessageResponse(
-                id = message.id ?: "",
-                chatId = message.chatId,
-                senderId = message.senderId,
-                receiverId = message.receiverId,
-                content = message.content,
-                type = message.type.toString(),
-                timestamp = message.timestamp
-            )
-        }
+        fun from(messages: List<Message>): List<MessageResponse> =
+            messages.map { message ->
+                MessageResponse(
+                    id = message.id ?: "",
+                    chatId = message.chatId,
+                    senderId = message.senderId,
+                    receiverId = message.receiverId,
+                    content = message.content,
+                    isRead = message.isRead,
+                    type = message.messageType.toString(),
+                    timestamp = message.createdAt,
+                )
+            }
     }
 }
-

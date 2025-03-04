@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class MessageService(
-    private val userChatProcessor: UserChatProcessor,
+    private val chatModifier: ChatModifier,
+    private val messageReader: MessageReader,
+    private val messageCreator: MessageCreator,
     private val messageNotifier: MessageNotifier,
     private val messageModifier: MessageModifier,
-    private val messageCreator: MessageCreator,
-    private val chatModifier: ChatModifier,
+    private val userChatProcessor: UserChatProcessor,
 
 ) {
     private val logger = LoggerFactory.getLogger(MessageService::class.java)
@@ -60,4 +61,9 @@ class MessageService(
         userId: Long,
     ): Boolean = messageModifier.markAllMessagesAsRead(chatId, userId)
 
+    suspend fun findMessages(
+        chatId: String,
+        limit: Int,
+        lastMessageId: String?,
+    ): List<Message> = messageReader.findMessages(chatId, limit, lastMessageId)
 }

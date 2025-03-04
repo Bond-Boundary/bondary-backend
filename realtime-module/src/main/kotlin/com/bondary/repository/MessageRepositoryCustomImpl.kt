@@ -17,11 +17,15 @@ class MessageRepositoryCustomImpl(
     override fun findByChatId(
         chatId: String,
         limit: Int,
+        lastMessageId: String?
     ): Flux<Message> {
-        val query =
-            Query(Criteria.where("chatId").`is`(chatId))
-                .with(Sort.by(Sort.Direction.DESC, "timestamp"))
-                .limit(limit)
+        val criteria = Criteria.where("chatId").`is`(chatId)
+        if (lastMessageId != null) {
+            criteria.and("_id").lt(lastMessageId)
+        }
+        val query = Query(criteria)
+            .with(Sort.by(Sort.Direction.DESC, "timestamp"))
+            .limit(limit)
         return reactiveMongoTemplate.find(query, Message::class.java)
     }
 
