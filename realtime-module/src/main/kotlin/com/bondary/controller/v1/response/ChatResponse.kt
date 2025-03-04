@@ -9,7 +9,7 @@ data class ChatResponse(
     val participants: List<Long>,
     val lastMessage: String?,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
 ) {
     companion object {
         fun from(chat: Chat): ChatResponse = ChatResponse(
@@ -18,7 +18,7 @@ data class ChatResponse(
             participants = chat.participants,
             lastMessage = chat.lastMessage,
             createdAt = chat.createdAt,
-            updatedAt = chat.updatedAt
+            updatedAt = chat.updatedAt,
         )
     }
 }

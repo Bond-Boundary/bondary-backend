@@ -17,7 +17,7 @@ class MessageRepositoryCustomImpl(
     override fun findByChatId(
         chatId: String,
         limit: Int,
-        lastMessageId: String?
+        lastMessageId: String?,
     ): Flux<Message> {
         val criteria = Criteria.where("chatId").`is`(chatId)
         if (lastMessageId != null) {

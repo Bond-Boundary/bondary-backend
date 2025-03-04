@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class SessionRegistry(
-    private val sessions: ConcurrentHashMap<String, WebSocketSession> = ConcurrentHashMap()
+    private val sessions: ConcurrentHashMap<String, WebSocketSession> = ConcurrentHashMap(),
 ) {
     fun setUserSession(
         userId: Long,

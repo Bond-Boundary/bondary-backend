@@ -15,7 +15,7 @@ class ChatService(
     private val logger = LoggerFactory.getLogger(ChatService::class.java)
 
     suspend fun createChat(
-        chat: Chat
+        chat: Chat,
     ): Chat =
         coroutineScope {
             val senderId = chat.participants[0]

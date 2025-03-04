@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/messages")
 class MessageController(
-    private val messageService: MessageService
+    private val messageService: MessageService,
 ) {
     @GetMapping
     suspend fun findMessages(
         @RequestParam chatId: String,
         @RequestParam(defaultValue = "50") limit: Int,
-        @RequestParam(required = false) lastMessageId: String?
+        @RequestParam(required = false) lastMessageId: String?,
     ): ResponseEntity<List<MessageResponse>> {
         val finds = messageService.findMessages(chatId, limit, lastMessageId)
         val response = MessageResponse.from(finds)

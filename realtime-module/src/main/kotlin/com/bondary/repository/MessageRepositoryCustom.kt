@@ -8,7 +8,7 @@ interface MessageRepositoryCustom {
     fun findByChatId(
         chatId: String,
         limit: Int = 50,
-        lastMessageId: String?
+        lastMessageId: String?,
     ): Flux<Message>
     fun markMessageAsRead(messageId: String): Mono<Boolean>
     fun markAllMessageAsRead(

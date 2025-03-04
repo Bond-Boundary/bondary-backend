@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class MessageCreator(
-    private val messageRepository: MessageRepository
+    private val messageRepository: MessageRepository,
 ) {
     suspend fun createMessage(
         chatId: String,
@@ -22,7 +22,7 @@ class MessageCreator(
             senderId = senderId,
             receiverId = receiverId,
             content = content,
-            messageType = messageType
+            messageType = messageType,
         )
         return messageRepository.save(created).awaitFirst()
     }

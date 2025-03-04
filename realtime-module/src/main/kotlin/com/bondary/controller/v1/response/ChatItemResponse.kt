@@ -11,11 +11,11 @@ data class ChatItemResponse(
     val lastMessage: String?,
     val unreadCount: Int,
     val displayIdx: String,
-    val updatedAt: Instant
+    val updatedAt: Instant,
 ) {
     companion object {
         fun from(chatPairs: List<Pair<Chat, UserChat>>): List<ChatItemResponse> =
-            chatPairs.map { (chat,userChat) ->
+            chatPairs.map { (chat, userChat) ->
                 ChatItemResponse(
                     chatId = chat.id ?: "",
                     chatType = chat.chatType.toString(),
@@ -23,9 +23,8 @@ data class ChatItemResponse(
                     lastMessage = chat.lastMessage,
                     unreadCount = userChat.unreadCount,
                     displayIdx = userChat.displayIndex,
-                    updatedAt = chat.updatedAt
+                    updatedAt = chat.updatedAt,
                 )
             }
     }
-
 }

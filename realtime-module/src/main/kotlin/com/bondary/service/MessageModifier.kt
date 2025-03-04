@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class MessageModifier(
     private val messageRepository: MessageRepository,
-    private val userChatRepository: UserChatRepository
+    private val userChatRepository: UserChatRepository,
 ) {
     private val logger = LoggerFactory.getLogger(MessageModifier::class.java)
 
@@ -28,5 +28,4 @@ class MessageModifier(
         logger.info("채팅방($chatId) 전체 메시지 읽음 처리 완료 for userId=$userId")
         return result
     }
-
 }

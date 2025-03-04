@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 @Service
 class WebSocketService(
     private val sessionRegistry: SessionRegistry,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(WebSocketService::class.java)
 
@@ -25,7 +25,7 @@ class WebSocketService(
     ): Mono<Void> {
         val event = mapOf(
             "type" to EventType.NEW_MESSAGE,
-            "data" to message
+            "data" to message,
         )
         val session = sessionRegistry.getUserSession(userId)
         if (session != null && session.isOpen) {

@@ -7,7 +7,6 @@ import kotlinx.coroutines.coroutineScope
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
-
 @Service
 class MessageService(
     private val chatModifier: ChatModifier,
@@ -26,7 +25,7 @@ class MessageService(
         receiverId: Long,
         content: String,
         messageType: MessageType = MessageType.TEXT,
-    ) : Message = coroutineScope{
+    ): Message = coroutineScope {
         runCatching {
             val created = messageCreator.createMessage(chatId, senderId, receiverId, content, messageType)
             logger.info("메시지 저장 완료: ${created.id}")

@@ -27,7 +27,7 @@ class UserChatCreator(
                 UserChat(
                     userId = userId,
                     chatId = chatId,
-                    chatTitle = "수신자 이름",    // 실제 수신자 이름으로 추후 수정 예정
+                    chatTitle = "수신자 이름", // 실제 수신자 이름으로 추후 수정 예정
                     displayIndex = chat.createdAt.toEpochMilli().toString(), // 이후에는 displayIdx 가 최근 message id로 update!!
                     updatedAt = Instant.now(),
                 ),

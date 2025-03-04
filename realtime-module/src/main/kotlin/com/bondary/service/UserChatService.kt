@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserChatService(
     private val userChatReader: UserChatReader,
-    private val chatReader: ChatReader
+    private val chatReader: ChatReader,
 ) {
     suspend fun findUserChats(userId: Long): List<Pair<Chat, UserChat>> {
         val userChats = userChatReader.findUserChats(userId)

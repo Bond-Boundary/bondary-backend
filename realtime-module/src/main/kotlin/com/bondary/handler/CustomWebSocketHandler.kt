@@ -50,15 +50,15 @@ class CustomWebSocketHandler(
 
         // Inbound: 클라이언트로부터 들어오는 메시지 처리
         val inbound = session.receive()
-                .map { it.payloadAsText }
-                .flatMap { payload -> handleIncomingMessage(userId, payload) }
-                .doFinally {
-                    if (sessions[userId]?.id == session.id) {
-                        sessions.remove(userId)
-                        logger.info("WebSocket 연결 종료: userId=$userId")
-                    }
+            .map { it.payloadAsText }
+            .flatMap { payload -> handleIncomingMessage(userId, payload) }
+            .doFinally {
+                if (sessions[userId]?.id == session.id) {
+                    sessions.remove(userId)
+                    logger.info("WebSocket 연결 종료: userId=$userId")
                 }
-                .then()
+            }
+            .then()
 
         // Outbound: pingFlux를 session.send()로 전송
         val outbound = session.send(pingFlux)
