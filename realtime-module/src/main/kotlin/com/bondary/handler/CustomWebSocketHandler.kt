@@ -2,6 +2,7 @@ package com.bondary.handler
 
 import com.bondary.model.MessageType
 import com.bondary.service.MessageService
+import com.bondary.service.SessionRegistry
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.reactor.mono
 import org.slf4j.LoggerFactory
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Component
 class CustomWebSocketHandler(
     private val messageService: MessageService,
+    private val sessionRegistry: SessionRegistry,
     private val objectMapper: ObjectMapper,
 ) : WebSocketHandler {
     private val logger = LoggerFactory.getLogger(CustomWebSocketHandler::class.java)
@@ -26,14 +28,14 @@ class CustomWebSocketHandler(
         logger.info("WebSocket 연결 수립: userId=$userId")
 
         // 동일 사용자의 기존 세션이 있다면, 종료 후 새 세션 저장
-        val closeExistingSession = sessions[userId]?.takeIf { it.isOpen }
+        val closeExistingSession = sessionRegistry.getUserSession(userId)?.takeIf { it.isOpen }
             ?.close()
             ?.doOnSuccess { logger.info("기존 세션 종료: userId=$userId") }
             ?.doOnError { e -> logger.warn("기존 세션 종료 중 오류: ${e.message}") }
             ?: Mono.empty()
 
         return closeExistingSession
-            .doOnSuccess { sessions[userId] = session }
+            .doOnSuccess { sessionRegistry.setUserSession(userId, session) }
             .then(setupWebSocketCommunication(session, userId))
     }
 
@@ -110,14 +112,12 @@ class CustomWebSocketHandler(
         userId: Long,
         message: Any,
     ): Mono<Void> {
-        val session = sessions[userId] ?: return Mono.empty()
+        val session = sessionRegistry.getUserSession(userId) ?: return Mono.empty()
         if (!session.isOpen) {
-            sessions.remove(userId)
+            sessionRegistry.removeUserSession(userId)
             return Mono.empty()
         }
         val payload = objectMapper.writeValueAsString(message)
         return session.send(Mono.just(session.textMessage(payload)))
     }
-
-    fun isUserOnline(userId: Long): Boolean = sessions.containsKey(userId) && sessions[userId]?.isOpen == true
 }
