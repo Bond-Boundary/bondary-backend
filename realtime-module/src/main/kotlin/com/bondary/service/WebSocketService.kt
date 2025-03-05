@@ -9,8 +9,7 @@ import reactor.core.publisher.Mono
 @Service
 class WebSocketService(
     private val sessionRegistry: SessionRegistry,
-    private val objectMapper: ObjectMapper,
-    private val messageReader: MessageReader
+    private val objectMapper: ObjectMapper
 ) {
     private val logger = LoggerFactory.getLogger(WebSocketService::class.java)
 
@@ -53,10 +52,9 @@ class WebSocketService(
     suspend fun notifyMessageAllRead(
         chatId: String,
         userId: Long,
+        senderIds: List<Long>
     ): Mono<Void> {
         try {
-            val senderIds = messageReader.findUnreadMessageSenders(chatId, userId)
-
             // 발신자가 없으면 빈 Mono 반환
             if (senderIds.isEmpty()) {
                 logger.info("채팅방($chatId)에서 읽지 않은 메시지의 발신자가 없습니다.")
