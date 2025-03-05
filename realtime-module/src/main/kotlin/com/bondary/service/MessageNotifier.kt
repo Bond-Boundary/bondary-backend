@@ -11,7 +11,7 @@ class MessageNotifier(
 ) {
     private val logger = LoggerFactory.getLogger(MessageNotifier::class.java)
 
-    fun notifyNewMessage(
+    suspend fun notifyNewMessage(
         receiverId: Long,
         message: Message,
     ): Mono<Void> {
@@ -21,11 +21,11 @@ class MessageNotifier(
         }
     }
 
-    private fun sendWebSocketNotification(
+    private suspend fun sendWebSocketNotification(
         receiverId: Long,
         message: Message,
     ): Mono<Void> {
-        return webSocketService.notifyMessage(receiverId, message)
+        return webSocketService.notifyMessage(message, receiverId)
             .doOnSuccess {
                 logger.info("WebSocket 메시지 전송 성공: receiverId=$receiverId, messageId=${message.id}")
             }
@@ -35,7 +35,7 @@ class MessageNotifier(
             .then()
     }
 
-    private fun sendNotification(
+    private suspend fun sendNotification(
         receiverId: Long,
         message: Message,
     ): Mono<Void> {

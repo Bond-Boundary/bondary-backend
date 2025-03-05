@@ -3,6 +3,7 @@ package com.bondary.handler
 import com.bondary.model.MessageType
 import com.bondary.service.MessageService
 import com.bondary.service.SessionRegistry
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.reactor.mono
 import org.slf4j.LoggerFactory
@@ -80,23 +81,24 @@ class CustomWebSocketHandler(
         return mono {
             try {
                 val message = objectMapper.readTree(payload)
-                when (message.get("type").asText()) {
+                val messageType = message.get("type")?.asText() ?: return@mono
+
+                when (messageType) {
                     "NEW_MESSAGE" -> {
-                        val chatId = message.get("chatId").asText()
-                        val receiverId = message.get("receiverId").asLong()
-                        val content = message.get("content").asText()
-                        val messageType =
-                            MessageType.valueOf(
-                                message.get("messageType")?.asText() ?: "TEXT",
-                            )
-                        messageService.sendMessage(chatId, userId, receiverId, content, messageType)
+                        val chatId = message.get("chatId")?.asText() ?: return@mono
+                        val receiverId = message.get("receiverId")?.asLongOrNull() ?: return@mono
+                        val content = message.get("content")?.asText() ?: return@mono
+                        val msgType = MessageType.valueOf(
+                            message.get("messageType")?.asText() ?: "TEXT"
+                        )
+                        messageService.sendMessage(chatId, userId, receiverId, content, msgType)
                     }
                     "MESSAGE_READ" -> {
-                        val messageId = message.get("messageId").asText()
-                        messageService.markMessageAsRead(messageId)
+                        val messageId = message.get("messageId")?.asText() ?: return@mono
+                        messageService.markMessageAsRead(messageId, userId)
                     }
                     "MESSAGE_ALL_READ" -> {
-                        val chatId = message.get("chatId").asText()
+                        val chatId = message.get("chatId")?.asText() ?: return@mono
                         messageService.markAllMessageAsRead(chatId, userId)
                     }
                     else -> Unit
@@ -119,5 +121,9 @@ class CustomWebSocketHandler(
         }
         val payload = objectMapper.writeValueAsString(message)
         return session.send(Mono.just(session.textMessage(payload)))
+    }
+
+    private fun JsonNode?.asLongOrNull(): Long? {
+        return this?.asLong()
     }
 }

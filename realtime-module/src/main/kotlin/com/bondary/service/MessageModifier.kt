@@ -3,6 +3,7 @@ package com.bondary.service
 import com.bondary.repository.MessageRepository
 import com.bondary.repository.UserChatRepository
 import kotlinx.coroutines.reactive.awaitFirst
+import kotlinx.coroutines.reactor.awaitSingleOrNull
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -10,10 +11,15 @@ import org.springframework.stereotype.Component
 class MessageModifier(
     private val messageRepository: MessageRepository,
     private val userChatRepository: UserChatRepository,
+    private val webSocketService: WebSocketService
 ) {
     private val logger = LoggerFactory.getLogger(MessageModifier::class.java)
 
-    suspend fun markMessageAsRead(messageId: String): Boolean {
+    suspend fun markMessageAsRead(
+        messageId: String,
+        userId: Long,
+    ): Boolean {
+        webSocketService.notifyMessageRead(messageId, userId).awaitSingleOrNull()
         return messageRepository.markMessageAsRead(messageId).awaitFirst()
     }
 
@@ -21,6 +27,7 @@ class MessageModifier(
         chatId: String,
         userId: Long,
     ): Boolean {
+        webSocketService.notifyMessageAllRead(chatId, userId).awaitSingleOrNull()
         val result = messageRepository.markAllMessageAsRead(chatId, userId).awaitFirst()
         if (result) {
             userChatRepository.resetUnreadCount(chatId, userId).awaitFirst()

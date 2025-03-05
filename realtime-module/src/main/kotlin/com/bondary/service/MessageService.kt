@@ -52,8 +52,11 @@ class MessageService(
         }.getOrThrow()
     }
 
-    suspend fun markMessageAsRead(messageId: String): Boolean =
-        messageModifier.markMessageAsRead(messageId)
+    suspend fun markMessageAsRead(
+        messageId: String,
+        userId: Long,
+    ): Boolean =
+        messageModifier.markMessageAsRead(messageId, userId)
 
     suspend fun markAllMessageAsRead(
         chatId: String,

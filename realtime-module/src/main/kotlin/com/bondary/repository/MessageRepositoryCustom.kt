@@ -15,4 +15,8 @@ interface MessageRepositoryCustom {
         chatId: String,
         userId: Long,
     ): Mono<Boolean>
+    fun findUnreadMessageSenders(
+        chatId: String,
+        receiverId: Long,
+    ): Mono<List<Long>>
 }

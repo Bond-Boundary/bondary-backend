@@ -54,4 +54,19 @@ class MessageRepositoryCustomImpl(
         return reactiveMongoTemplate.updateMulti(query, update, Message::class.java)
             .map { it.modifiedCount > 0 }
     }
+
+    override fun findUnreadMessageSenders(
+        chatId: String,
+        receiverId: Long,
+    ): Mono<List<Long>> {
+        val query = Query(
+            Criteria.where("chatId").`is`(chatId)
+                .and("receiverId").`is`(receiverId)
+                .and("isRead").`is`(false)
+        )
+        return reactiveMongoTemplate.find(query, Message::class.java)
+            .map { it.senderId }
+            .distinct()
+            .collectList()
+    }
 }

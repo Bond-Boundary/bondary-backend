@@ -18,4 +18,12 @@ class MessageReader(
             .collectList()
             .awaitFirst()
     }
+
+    suspend fun findUnreadMessageSenders(
+        chatId: String,
+        receiverId: Long,
+    ): List<Long> {
+        return messageRepository.findUnreadMessageSenders(chatId, receiverId)
+            .awaitFirst()
+    }
 }
