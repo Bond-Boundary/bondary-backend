@@ -11,11 +11,6 @@ assignees: ''
 
 - 
 
-#### Detailed Work Description
-- TODO
-- TODO
-- TODO
-
 #### Reference(Optional)
 
 - 
