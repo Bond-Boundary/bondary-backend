@@ -11,11 +11,11 @@ assignees: ''
 
 - 
 
-#### Under what conditions does the bug occur?
+#### AS-IS 
 
 - 
 
-#### Expected Outcome
+#### TO-BE
 
 - 
 
