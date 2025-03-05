@@ -12,7 +12,7 @@ class MessageModifier(
     private val messageReader: MessageReader,
     private val webSocketService: WebSocketService,
     private val messageRepository: MessageRepository,
-    private val userChatRepository: UserChatRepository
+    private val userChatRepository: UserChatRepository,
 ) {
     private val logger = LoggerFactory.getLogger(MessageModifier::class.java)
 

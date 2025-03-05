@@ -62,7 +62,7 @@ class MessageRepositoryCustomImpl(
         val query = Query(
             Criteria.where("chatId").`is`(chatId)
                 .and("receiverId").`is`(receiverId)
-                .and("isRead").`is`(false)
+                .and("isRead").`is`(false),
         )
         return reactiveMongoTemplate.find(query, Message::class.java)
             .map { it.senderId }

@@ -89,7 +89,7 @@ class CustomWebSocketHandler(
                         val receiverId = message.get("receiverId")?.asLongOrNull() ?: return@mono
                         val content = message.get("content")?.asText() ?: return@mono
                         val msgType = MessageType.valueOf(
-                            message.get("messageType")?.asText() ?: "TEXT"
+                            message.get("messageType")?.asText() ?: "TEXT",
                         )
                         messageService.sendMessage(chatId, userId, receiverId, content, msgType)
                     }
