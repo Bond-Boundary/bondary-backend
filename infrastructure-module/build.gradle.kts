@@ -1,0 +1,5 @@
+dependencies {
+    implementation(project(":application-module"))
+    implementation(project(":domain-module"))
+    implementation("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
+}
