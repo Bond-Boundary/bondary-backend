@@ -10,5 +10,6 @@ tasks.withType<Jar> {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(project(":infrastructure-module"))
     runtimeOnly("com.mysql:mysql-connector-j")
 }
