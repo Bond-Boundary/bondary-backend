@@ -1,9 +1,8 @@
 package com.bondary.persistence.jpa.member.entity
 
 import com.bondary.persistence.jpa.support.AggregateRoot
+import com.bondary.persistence.jpa.support.StringListConverter
 import jakarta.persistence.*
-import org.hibernate.annotations.JdbcTypeCode
-import org.hibernate.type.SqlTypes
 
 @Entity
 @Table(name = "members")
@@ -32,7 +31,7 @@ class MemberEntity(
     @Column(name = "interest_area", nullable = false)
     var interestArea: InterestArea,
 
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Convert(converter = StringListConverter::class)
     @Column(name = "etc_links", columnDefinition = "text")
     var etcLinks: List<String>?,
 ) : AggregateRoot<MemberEntity>(id) {
