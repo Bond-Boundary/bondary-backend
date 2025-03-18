@@ -1,4 +1,4 @@
-package com.bondary.persistence.jpa
+package com.bondary.persistence.jpa.recommend_document
 
 import org.springframework.data.jpa.repository.JpaRepository
 

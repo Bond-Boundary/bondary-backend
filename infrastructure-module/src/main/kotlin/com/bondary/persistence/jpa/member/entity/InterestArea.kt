@@ -1,4 +1,4 @@
-package com.bondary.persistence.jpa
+package com.bondary.persistence.jpa.member.entity
 
 enum class InterestArea {
     PLANNING_STRATEGY,  // 기획·전략

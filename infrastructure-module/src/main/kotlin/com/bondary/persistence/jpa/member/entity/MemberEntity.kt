@@ -1,4 +1,4 @@
-package com.bondary.persistence.jpa
+package com.bondary.persistence.jpa.member.entity
 
 import com.bondary.persistence.jpa.support.AggregateRoot
 import jakarta.persistence.*
@@ -9,25 +9,31 @@ import org.hibernate.type.SqlTypes
 @Table(name = "members")
 class MemberEntity(
     id: String,
+
+    @Column(name = "introduction", nullable = false)
     var introduction: String,
+
+    @Column(name = "school_name", nullable = false)
     var schoolName: String,
+
+    @Column(name = "first_major_name", nullable = false)
     var firstMajorName: String,
-    var secondaryMajorName: String,
+
+    @Column(name = "secondary_major_name")
+    var secondaryMajorName: String?,
+
+    @Column(name = "instagram")
     var instagram: String?,
-    var linkedIn: String?,
+
+    @Column(name = "linkedin")
+    var linkedin: String?,
 
     @Enumerated(EnumType.STRING)
-    @Column(
-        name = "interest_area",
-        nullable = false
-    )
+    @Column(name = "interest_area", nullable = false)
     var interestArea: InterestArea,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(
-        name = "images",
-        columnDefinition = "text",
-    )
+    @Column(name = "etc_links", columnDefinition = "text")
     var etcLinks: List<String>?,
 ) : AggregateRoot<MemberEntity>(id) {
 }
