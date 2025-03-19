@@ -14,6 +14,10 @@ sealed class CoreException(
         data: Any? = null
     ) : CoreException(CoreErrorType.DATA_IS_ALREADY_EXIST, data)
 
+    class InvalidArgument(
+        data: Any? = null
+    ) :  CoreException(CoreErrorType.INVALID_ARGUMENT, data)
+
     class Default(
         override val errorType: CoreErrorType,
         override val data: Any? = null

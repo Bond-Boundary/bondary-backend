@@ -19,4 +19,11 @@ enum class CoreErrorType(
         "해당 데이터는 이미 존재합니다.",
             CoreErrorLevel.INFO
             ),
+
+    INVALID_ARGUMENT(
+        CoreErrorKind.SERVER_ERROR,
+        CoreErrorCode.ERROR_1001,
+        "유효하지 않은 인자입니다.",
+        CoreErrorLevel.INFO
+    ),
 }

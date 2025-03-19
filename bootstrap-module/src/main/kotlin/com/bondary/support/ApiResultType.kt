@@ -1,6 +1,6 @@
 package io.dodn.springboot.core.support.response
 
-enum class ResultType {
+enum class ApiResultType {
     SUCCESS,
-    ERROR,
+    ERROR
 }

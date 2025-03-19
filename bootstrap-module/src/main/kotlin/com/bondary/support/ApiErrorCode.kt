@@ -1,5 +1,5 @@
 package io.dodn.springboot.core.support.error
 
-enum class ErrorCode {
+enum class ApiErrorCode {
     ERROR_500,
 }
