@@ -1,0 +1,21 @@
+package com.bondary.support
+
+sealed class CoreException(
+    open val errorType: CoreErrorType,
+    open val data: Any? = null,
+    message: String = errorType.message
+) : RuntimeException(message) {
+
+    class NotFoundData(
+        data: Any? = null
+    ) : CoreException(CoreErrorType.NOT_FOUND_DATA, data)
+
+    class DataAlreadyExists(
+        data: Any? = null
+    ) : CoreException(CoreErrorType.DATA_IS_ALREADY_EXIST, data)
+
+    class Default(
+        override val errorType: CoreErrorType,
+        override val data: Any? = null
+    ) : CoreException(errorType, data)
+}
