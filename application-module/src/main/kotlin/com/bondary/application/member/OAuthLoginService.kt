@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional(readOnly = true)
 class OAuthLoginService(
     private val oAuthMemberInfoPort: MemberOAuthInfoPort,
     private val memberAuthInfoPort: MemberAuthInfoPort,
     private val memberFunctionPort: MemberFunctionPort,
     private val memberTokenPort: MemberTokenPort
 ) : OAuthLoginUseCase {
+    @Transactional
     override fun login(command: OAuthLoginUseCase.Command): OAuthLoginUseCase.Response {
-        val oauthInfo = oAuthMemberInfoPort.getAuthInfo(
-            provider = OAuthProvider.parse(command.provider),
+        val oauthInfo = oAuthMemberInfoPort.getOAuthInfo(
+            oauthProvider = OAuthProvider.parse(command.provider),
             accessToken = command.accessToken
         )
 
         val memberAuthInfo =  memberAuthInfoPort.getMemberAuthInfo(
             socialId = oauthInfo.socialId,
-            oAuthProvider = oauthInfo.oAuthProvider
+            oauthProvider = oauthInfo.oAuthProvider
         )
 
         return when (memberAuthInfo) {
@@ -48,7 +48,7 @@ class OAuthLoginService(
 
     private fun handleNotRegisterMember(oauthInfo: OAuthMemberInfo): OAuthLoginUseCase.Response.NonRegistered {
         val register = memberTokenPort.generateRegisterToken(
-            username = oauthInfo.memberName,
+            name = oauthInfo.memberName,
             email = oauthInfo.memberEmail,
             profileImage= oauthInfo.memberProfileImage,
             oAuthProvider = oauthInfo.oAuthProvider.name,

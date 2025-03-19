@@ -14,7 +14,8 @@ class Member(
     var secondaryMajorName: String?,
     var instagram: String?,
     var linkedin: String?,
-    var interestArea: String,
+    var interestArea: List<String>,
+    var interestJob: String?,
     var etcLinks: List<String>?,
     var onboardingAt: LocalDateTime?,
     createdAt: LocalDateTime,
@@ -31,7 +32,8 @@ class Member(
             secondaryMajorName: String?,
             instagram: String?,
             linkedin: String?,
-            interestArea: String,
+            interestArea: List<String>,
+            interestJob: String?,
             etcLinks: List<String>?,
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime = LocalDateTime.now(),
@@ -43,9 +45,10 @@ class Member(
             schoolName = schoolName,
             firstMajorName = firstMajorName,
             secondaryMajorName = secondaryMajorName,
+            interestArea = interestArea,
+            interestJob = interestJob,
             instagram = instagram,
             linkedin = linkedin,
-            interestArea = interestArea,
             etcLinks = etcLinks,
             onboardingAt = null,
             createdAt = createdAt,
@@ -56,6 +59,4 @@ class Member(
     fun isOnboarding(): Boolean {
         return this.onboardingAt != null
     }
-
-
 }
