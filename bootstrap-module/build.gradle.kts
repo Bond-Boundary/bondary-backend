@@ -9,7 +9,11 @@ tasks.withType<Jar> {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(project(":application-module"))
+    implementation(project(":domain-module"))
     implementation(project(":infrastructure-module"))
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
     runtimeOnly("com.mysql:mysql-connector-j")
 }

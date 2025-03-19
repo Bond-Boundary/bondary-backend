@@ -1,6 +1,6 @@
 package com.bondary.persistence.jpa.member.entity
 
-import com.bondary.persistence.jpa.support.AggregateRoot
+import com.bondary.persistence.jpa.support.AggregateEntity
 import com.bondary.persistence.jpa.support.StringListConverter
 import jakarta.persistence.*
 
@@ -34,5 +34,5 @@ class MemberEntity(
     @Convert(converter = StringListConverter::class)
     @Column(name = "etc_links", columnDefinition = "text")
     var etcLinks: List<String>?,
-) : AggregateRoot<MemberEntity>(id) {
+) : AggregateEntity<MemberEntity>(id) {
 }
