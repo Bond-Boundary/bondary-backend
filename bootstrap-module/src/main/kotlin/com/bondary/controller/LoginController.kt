@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class LoginController(
     private val oAuthLoginUseCase: OAuthLoginUseCase
 ) {
-    @PostMapping("/login/{provider}")
+    @PostMapping("/v1/login/{provider}")
     fun oauthLogin(
         @PathVariable provider: String,
         @RequestBody request: OAuthLoginRequest
@@ -25,15 +25,9 @@ class LoginController(
 
         return when(val response = oAuthLoginUseCase.login(command)) {
             is OAuthLoginUseCase.Response.Success ->
-                ApiResponse.success(OAuthLoginResponse.LoginSuccess(
-                    response.accessToken,
-                    response.refreshToken,
-                    response.isOnboarding
-                ))
+                ApiResponse.success(OAuthLoginResponse.LoginSuccess.of(response))
             is OAuthLoginUseCase.Response.NonRegistered ->
-                ApiResponse.success(OAuthLoginResponse.RequireRegister(
-                    response.registerToken
-                ))
+                ApiResponse.success(OAuthLoginResponse.RequireRegister.of(response))
         }
     }
 
