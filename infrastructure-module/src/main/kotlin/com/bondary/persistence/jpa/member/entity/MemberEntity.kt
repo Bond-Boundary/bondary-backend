@@ -1,13 +1,23 @@
 package com.bondary.persistence.jpa.member.entity
 
 import com.bondary.persistence.jpa.support.AggregateEntity
+import com.bondary.persistence.jpa.support.InterestAreaListConverter
 import com.bondary.persistence.jpa.support.StringListConverter
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Convert
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "members")
 class MemberEntity(
     id: String,
+
+    @Column(name = "name", nullable = false)
+    var name: String,
+
+    @Column(name = "profile_image", nullable = false)
+    var profileImage: String,
 
     @Column(name = "introduction", nullable = false)
     var introduction: String,
@@ -27,9 +37,9 @@ class MemberEntity(
     @Column(name = "linkedin")
     var linkedin: String?,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "interest_area", nullable = false)
-    var interestArea: InterestArea,
+    @Convert(converter = InterestAreaListConverter::class)
+    @Column(name = "interest_areas", columnDefinition = "text")
+    var interestArea: List<InterestArea>,
 
     @Convert(converter = StringListConverter::class)
     @Column(name = "etc_links", columnDefinition = "text")
