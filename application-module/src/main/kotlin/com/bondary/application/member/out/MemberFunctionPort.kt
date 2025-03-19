@@ -4,5 +4,7 @@ import com.bondary.member.Member
 import com.bondary.support.DomainId
 
 interface MemberFunctionPort {
-    fun getMember(userId: DomainId): Member?
+    fun getMember(memberId: DomainId): Member?
+
+    fun save(member: Member): Member
 }
