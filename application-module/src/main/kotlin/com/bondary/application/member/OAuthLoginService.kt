@@ -41,7 +41,7 @@ class OAuthLoginService(
 
         val access = memberTokenPort.generateAccessToken(member)
         val refresh = memberTokenPort.generateRefreshToken(member)
-        memberTokenPort.appendToken(MemberToken.append(memberId = member.id, token = refresh))
+        memberTokenPort.saveToken(MemberToken.append(memberId = member.id, token = refresh))
 
         return OAuthLoginUseCase.Response.Success(access, refresh, member.isOnboarding())
     }
@@ -54,7 +54,7 @@ class OAuthLoginService(
             oAuthProvider = oauthInfo.oAuthProvider.name,
             socialId = oauthInfo.socialId
         )
-        memberTokenPort.appendToken(MemberToken.append(token = register))
+        memberTokenPort.saveToken(MemberToken.append(token = register))
 
         return OAuthLoginUseCase.Response.NonRegistered(register)
     }

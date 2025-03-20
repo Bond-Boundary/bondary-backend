@@ -3,7 +3,6 @@ package com.bondary.application.member
 import com.bondary.application.member.`in`.AppendMemberUseCase
 import com.bondary.application.member.out.MemberAuthInfoPort
 import com.bondary.application.member.out.MemberFunctionPort
-import com.bondary.application.member.out.MemberOAuthInfoPort
 import com.bondary.application.member.out.MemberTokenPort
 import com.bondary.member.Member
 import com.bondary.member.MemberAuth
@@ -56,7 +55,7 @@ class MemberCommandService(
         val access = memberTokenPort.generateAccessToken(append)
         val refresh = memberTokenPort.generateRefreshToken(append)
 
-        memberTokenPort.appendToken(MemberToken.append(memberId = append.id, token = refresh))
+        memberTokenPort.saveToken(MemberToken.append(memberId = append.id, token = refresh))
         return AppendMemberUseCase.Response.Success(access, refresh)
     }
 }

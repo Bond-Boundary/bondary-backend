@@ -18,7 +18,7 @@ interface MemberTokenPort {
 
     fun generateRefreshToken(member: Member?): String
 
-    fun appendToken(token: MemberToken)
+    fun saveToken(token: MemberToken)
 
     fun isExistToken(token: String): Boolean
 
