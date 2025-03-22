@@ -6,17 +6,17 @@ import java.time.LocalDateTime
 
 class MemberAuth(
     id: DomainId,
-    val memberId: DomainId,
+    val memberId: DomainId?,
     var socialId: SocialId,
-    val oauthProvider: OAuthProvider,
+    val oAuthProvider: OAuthProvider,
     createdAt: LocalDateTime,
     updatedAt: LocalDateTime,
 ) : BaseDomain(id, createdAt, updatedAt) {
     companion object{
         fun append(
-            memberId: DomainId,
+            memberId: DomainId? = null,
             socialId: SocialId,
-            oauthProvider: OAuthProvider,
+            oAuthProvider: OAuthProvider,
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime = LocalDateTime.now(),
         ): MemberAuth =
@@ -24,7 +24,7 @@ class MemberAuth(
                 id = DomainId.generate(),
                 memberId = memberId,
                 socialId = socialId,
-                oauthProvider = oauthProvider,
+                oAuthProvider = oAuthProvider,
                 createdAt = createdAt,
                 updatedAt = updatedAt
             )

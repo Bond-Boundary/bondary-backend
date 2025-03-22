@@ -7,6 +7,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "members")
@@ -31,18 +32,24 @@ class MemberEntity(
     @Column(name = "secondary_major_name")
     var secondaryMajorName: String?,
 
+    @Convert(converter = InterestAreaListConverter::class)
+    @Column(name = "interest_areas", columnDefinition = "text")
+    var interestArea: List<InterestArea>,
+
+    @Column(name = "interest_job")
+    var interestJob: String?,
+
     @Column(name = "instagram")
     var instagram: String?,
 
     @Column(name = "linkedin")
     var linkedin: String?,
 
-    @Convert(converter = InterestAreaListConverter::class)
-    @Column(name = "interest_areas", columnDefinition = "text")
-    var interestArea: List<InterestArea>,
-
     @Convert(converter = StringListConverter::class)
     @Column(name = "etc_links", columnDefinition = "text")
     var etcLinks: List<String>?,
+
+    @Column(name = "onboarding_at")
+    val onBoardingAt: LocalDateTime?
 ) : AggregateEntity<MemberEntity>(id) {
 }

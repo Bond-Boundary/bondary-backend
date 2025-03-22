@@ -18,6 +18,14 @@ sealed class CoreException(
         data: Any? = null
     ) :  CoreException(CoreErrorType.INVALID_ARGUMENT, data)
 
+    class InvalidTokenException(
+        data: Any? = null
+    ) :  CoreException(CoreErrorType.INVALID_TOKEN, data)
+
+    class ExpiredTokenException(
+        data: Any? = null
+    ) :  CoreException(CoreErrorType.EXPIRED_TOKEN, data)
+
     class Default(
         override val errorType: CoreErrorType,
         override val data: Any? = null

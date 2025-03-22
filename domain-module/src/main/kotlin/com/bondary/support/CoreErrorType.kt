@@ -20,10 +20,26 @@ enum class CoreErrorType(
             CoreErrorLevel.INFO
             ),
 
+    EXPIRED_TOKEN(
+        CoreErrorKind.SERVER_ERROR,
+        CoreErrorCode.ERROR_1002,
+        "만료된 토큰입니다..",
+        CoreErrorLevel.INFO
+    ),
+
     INVALID_ARGUMENT(
         CoreErrorKind.SERVER_ERROR,
-        CoreErrorCode.ERROR_1001,
+        CoreErrorCode.ERROR_1003,
         "유효하지 않은 인자입니다.",
         CoreErrorLevel.INFO
     ),
+
+    INVALID_TOKEN(
+        CoreErrorKind.SERVER_ERROR,
+        CoreErrorCode.ERROR_1003,
+        "유효하지 않은 토큰입니다.",
+        CoreErrorLevel.INFO
+    ),
+
+
 }

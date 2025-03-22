@@ -5,6 +5,7 @@ import com.bondary.controller.v1.request.AppendMemberRequest
 import com.bondary.controller.v1.response.AppendMemberResponse
 import io.dodn.springboot.core.support.response.ApiResponse
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -12,7 +13,9 @@ class MemberController(
     private val appendMemberUseCase: AppendMemberUseCase
 ) {
     @PostMapping("/v1/members")
-    fun appendMember(request: AppendMemberRequest): ApiResponse<AppendMemberResponse> {
+    suspend fun appendMember(
+        @RequestBody request: AppendMemberRequest
+    ): ApiResponse<AppendMemberResponse> {
         val response = appendMemberUseCase.appendMember(
             AppendMemberUseCase.Command(
                 token = request.token,

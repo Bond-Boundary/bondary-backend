@@ -2,11 +2,12 @@ package com.bondary.application.member.`in`
 
 interface OAuthLoginUseCase {
 
-    fun login(command: Command): Response
+    suspend fun login(command: Command): Response
 
     data class Command(
         val provider: String,
-        val accessToken: String,
+        val authorizationCode: String,
+        val redirectUri: String
     )
 
     sealed class Response {

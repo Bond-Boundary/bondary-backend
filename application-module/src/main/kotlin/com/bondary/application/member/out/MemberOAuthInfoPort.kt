@@ -4,7 +4,7 @@ import com.bondary.application.member.OAuthMemberInfo
 import com.bondary.member.OAuthProvider
 
 interface MemberOAuthInfoPort {
-    fun getOAuthInfo(
+    suspend fun getOAuthMemberInfo(
         oauthProvider: OAuthProvider,
         accessToken: String
     ): OAuthMemberInfo

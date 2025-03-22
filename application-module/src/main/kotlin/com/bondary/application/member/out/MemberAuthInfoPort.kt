@@ -5,15 +5,15 @@ import com.bondary.member.OAuthProvider
 import com.bondary.member.SocialId
 
 interface MemberAuthInfoPort {
-    fun getMemberAuthInfo(
+    suspend fun getMemberAuthInfo(
         socialId: SocialId,
         oauthProvider: OAuthProvider
     ): MemberAuth?
 
-    fun isExistsMemberAuthInfo(
+    suspend fun isExistsMemberAuthInfo(
         socialId: SocialId,
         oAuthProvider: OAuthProvider
     ): Boolean
 
-    fun saveMemberAuthInfo(memberAuth: MemberAuth): MemberAuth
+    suspend fun saveMemberAuthInfo(memberAuth: MemberAuth): MemberAuth
 }

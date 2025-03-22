@@ -2,7 +2,7 @@ package com.bondary.application.member.`in`
 
 interface AppendMemberUseCase {
 
-    fun appendMember(command: Command): Response.Success
+    suspend fun appendMember(command: Command): Response.Success
 
     data class Command(
         val token: String,
