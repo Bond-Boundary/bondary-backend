@@ -16,13 +16,13 @@ class MemberCommandService(
     private val memberFunctionPort: MemberFunctionPort,
     private val memberTokenPort: MemberTokenPort
 ) : AppendMemberUseCase {
-    override fun appendMember(command: AppendMemberUseCase.Command): AppendMemberUseCase.Response.Success {
-        if (!memberTokenPort.isExistToken(command.token)) {
+    override suspend fun appendMember(command: AppendMemberUseCase.Command): AppendMemberUseCase.Response.Success {
+        if (!memberTokenPort.isExistTokenByToken(command.token)) {
             throw CoreException.NotFoundData("잘못된 토큰 입니다.")
         }
         val resolved = memberTokenPort.resolveRegisterToken(command.token)
 
-        if (!memberAuthInfoPort.isExistsMemberAuthInfo(
+        if (memberAuthInfoPort.isExistsMemberAuthInfo(
                 socialId = resolved.socialId,
                 oAuthProvider = resolved.oAuthProvider
             )
@@ -46,7 +46,7 @@ class MemberCommandService(
         val memberOAuth = MemberAuth.append(
             memberId = append.id,
             socialId = resolved.socialId,
-            oauthProvider = resolved.oAuthProvider
+            oAuthProvider = resolved.oAuthProvider
         )
 
         memberFunctionPort.save(append)
