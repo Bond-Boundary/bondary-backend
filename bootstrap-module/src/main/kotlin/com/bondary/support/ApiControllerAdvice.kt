@@ -1,8 +1,5 @@
-package com.bondary.controller
+package com.bondary.support
 
-import com.bondary.support.CoreErrorKind
-import com.bondary.support.CoreErrorLevel
-import com.bondary.support.CoreException
 import io.dodn.springboot.core.support.error.ApiErrorType
 import io.dodn.springboot.core.support.error.CoreApiException
 import io.dodn.springboot.core.support.response.ApiResponse

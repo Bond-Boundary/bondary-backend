@@ -4,7 +4,13 @@ import com.bondary.persistence.jpa.support.BaseEntity
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "member_token")
+@Table(
+    name = "member_token",
+    indexes = [
+        Index(name = "idx_member_token_token", columnList = "token"),
+        Index(name = "idx_member_token_member_id", columnList = "member_id")
+    ]
+)
 class MemberTokenEntity(
     id: String,
 

@@ -35,6 +35,7 @@ class Member(
             interestArea: List<String>,
             interestJob: String?,
             etcLinks: List<String>?,
+            onboardingAt: LocalDateTime = LocalDateTime.now(),
             createdAt: LocalDateTime = LocalDateTime.now(),
             updatedAt: LocalDateTime = LocalDateTime.now(),
         ): Member = Member(
@@ -50,7 +51,7 @@ class Member(
             instagram = instagram,
             linkedin = linkedin,
             etcLinks = etcLinks,
-            onboardingAt = null,
+            onboardingAt = onboardingAt,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
