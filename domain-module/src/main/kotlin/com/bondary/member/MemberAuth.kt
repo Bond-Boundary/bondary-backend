@@ -1,5 +1,7 @@
 package com.bondary.member
 
+import com.bondary.OAuthProvider
+import com.bondary.SocialId
 import com.bondary.support.BaseDomain
 import com.bondary.support.DomainId
 import java.time.LocalDateTime

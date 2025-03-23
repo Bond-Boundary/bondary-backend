@@ -1,6 +1,6 @@
 package com.bondary.persistence.jpa.member.entity
 
-import com.bondary.member.OAuthProvider
+import com.bondary.OAuthProvider
 import com.bondary.persistence.jpa.support.BaseEntity
 import jakarta.persistence.*
 

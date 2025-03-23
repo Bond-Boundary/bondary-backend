@@ -1,8 +1,8 @@
 package com.bondary.application.member.out
 
 import com.bondary.member.MemberAuth
-import com.bondary.member.OAuthProvider
-import com.bondary.member.SocialId
+import com.bondary.OAuthProvider
+import com.bondary.SocialId
 
 interface MemberAuthInfoPort {
     suspend fun getMemberAuthInfo(

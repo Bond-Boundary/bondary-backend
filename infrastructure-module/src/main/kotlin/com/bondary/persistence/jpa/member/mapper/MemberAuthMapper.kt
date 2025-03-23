@@ -2,7 +2,7 @@ package com.bondary.persistence.jpa.member.mapper
 
 import com.bondary.member.MemberAuth
 import com.bondary.member.MemberToken
-import com.bondary.member.SocialId
+import com.bondary.SocialId
 import com.bondary.persistence.jpa.member.entity.MemberAuthEntity
 import com.bondary.persistence.jpa.member.entity.MemberTokenEntity
 import com.bondary.support.DomainId

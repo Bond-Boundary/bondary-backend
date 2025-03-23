@@ -1,7 +1,7 @@
 package com.bondary.security
 
 import com.bondary.member.Member
-import com.bondary.support.CoreException
+import com.bondary.support.exception.CoreException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import org.springframework.stereotype.Component
@@ -22,22 +22,22 @@ class JwtManager(
             claims = jwtClaims,
         )
 
-    fun generateToken(member: Member, memberTokenType: MemberTokenType): String {
-        val jwtClaims = MemberJwtClaims(
+    fun generateToken(member: Member, JWTTokenType: JwtTokenType): String {
+        val jwtClaims = JwtClaimsForMember(
             memberId = member.id.value,
-            memberTokenType = memberTokenType
+            JWTTokenType = JWTTokenType
         )
         val payload = getDefaultPayload(jwtClaims, 1000 * 60 * 10 * 24)
         return jwtProvider.createToken(payload, jwtProperties.secretKey)
     }
 
     fun resolveAccessOrRefreshTokenByType(
-        memberTokenType: MemberTokenType,
-        resolve: () -> JwtPayload<MemberJwtClaims>
-    ): JwtPayload<MemberJwtClaims> {
+        JWTTokenType: JwtTokenType,
+        resolve: () -> JwtPayload<JwtClaimsForMember>
+    ): JwtPayload<JwtClaimsForMember> {
         return resolveToken {
             val jwtPayload = resolve()
-            if (jwtPayload.claims.equalsTokenType(memberTokenType).not()) {
+            if (jwtPayload.claims.equalsTokenType(JWTTokenType).not()) {
                 throw CoreException.InvalidTokenException("요청 토큰 타입이 올바르지 않습니다.")
             }
             return@resolveToken jwtPayload

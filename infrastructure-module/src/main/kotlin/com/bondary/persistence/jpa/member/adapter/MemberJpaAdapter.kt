@@ -4,7 +4,7 @@ import com.bondary.application.member.out.MemberFunctionPort
 import com.bondary.member.Member
 import com.bondary.persistence.jpa.member.mapper.MemberMapper
 import com.bondary.persistence.jpa.member.repository.MemberJpaRepository
-import com.bondary.support.CoreException
+import com.bondary.support.exception.CoreException
 import com.bondary.support.DomainId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

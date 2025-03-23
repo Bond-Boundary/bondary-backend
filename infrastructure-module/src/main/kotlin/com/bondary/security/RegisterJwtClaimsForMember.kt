@@ -1,12 +1,12 @@
-package com.bondary.application.member
+package com.bondary.security
 
 import com.bondary.OAuthProvider
 import com.bondary.SocialId
 
-data class OAuthMemberInfo(
+class RegisterJwtClaimsForMember(
     val name: String,
     val email: String,
     val profileImage: String,
     val socialId: SocialId,
     val oAuthProvider: OAuthProvider,
-)
+) : JwtClaims

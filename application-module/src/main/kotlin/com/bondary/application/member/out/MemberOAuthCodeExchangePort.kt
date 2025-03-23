@@ -1,6 +1,6 @@
 package com.bondary.application.member.out
 
-import com.bondary.member.OAuthProvider
+import com.bondary.OAuthProvider
 
 interface MemberOAuthCodeExchangePort {
     suspend fun exchangeAuthCodeForToken(

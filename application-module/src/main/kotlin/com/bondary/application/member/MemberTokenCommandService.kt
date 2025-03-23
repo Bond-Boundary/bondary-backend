@@ -4,7 +4,7 @@ import com.bondary.application.member.`in`.TokenUseCase
 import com.bondary.application.member.out.MemberAuthInfoPort
 import com.bondary.application.member.out.MemberFunctionPort
 import com.bondary.application.member.out.MemberTokenPort
-import com.bondary.support.CoreException
+import com.bondary.support.exception.CoreException
 import com.bondary.support.DomainId
 import org.springframework.stereotype.Service
 

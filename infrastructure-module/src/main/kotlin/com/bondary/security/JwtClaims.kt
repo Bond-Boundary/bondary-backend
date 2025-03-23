@@ -1,7 +1,7 @@
 package com.bondary.security
 
-import com.bondary.member.OAuthProvider
-import com.bondary.member.SocialId
+import com.bondary.OAuthProvider
+import com.bondary.SocialId
 import io.jsonwebtoken.Claims
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
@@ -28,7 +28,7 @@ interface JwtClaims{
                     String::class -> value.toString()
                     Long::class -> value.toString().toLong()
                     OAuthProvider::class -> OAuthProvider.parse(value.toString())
-                    MemberTokenType::class -> MemberTokenType.valueOf(value.toString())
+                    JwtTokenType::class -> JwtTokenType.valueOf(value.toString())
                     SocialId::class -> SocialId(value.toString())
                     else -> throw IllegalArgumentException("지원하지 않는 타입입니다: ${it.type.classifier}")
                 }

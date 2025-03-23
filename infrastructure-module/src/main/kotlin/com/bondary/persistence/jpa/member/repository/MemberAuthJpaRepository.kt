@@ -1,6 +1,6 @@
 package com.bondary.persistence.jpa.member.repository
 
-import com.bondary.member.OAuthProvider
+import com.bondary.OAuthProvider
 import com.bondary.persistence.jpa.member.entity.MemberAuthEntity
 import org.springframework.data.jpa.repository.JpaRepository
 

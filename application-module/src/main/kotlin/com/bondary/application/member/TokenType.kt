@@ -1,7 +1,7 @@
 package com.bondary.application.member
 
-import com.bondary.member.OAuthProvider
-import com.bondary.member.SocialId
+import com.bondary.OAuthProvider
+import com.bondary.SocialId
 
 sealed class TokenType {
     data class RegisterToken(
