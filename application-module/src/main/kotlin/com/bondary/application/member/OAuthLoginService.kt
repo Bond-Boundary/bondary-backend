@@ -1,11 +1,11 @@
 package com.bondary.application.member
 
+import com.bondary.OAuthProvider
 import com.bondary.application.member.`in`.OAuthLoginUseCase
 import com.bondary.application.member.out.*
 import com.bondary.member.MemberAuth
 import com.bondary.member.MemberToken
-import com.bondary.member.OAuthProvider
-import com.bondary.support.CoreException
+import com.bondary.support.exception.CoreException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -63,7 +63,7 @@ class OAuthLoginService(
             oAuthProvider = oauthInfo.oAuthProvider.name,
             socialId = oauthInfo.socialId.value
         )
-        memberTokenPort.saveToken(memberToken = MemberToken.append(token = register))
+//        memberTokenPort.saveToken(memberToken = MemberToken.append(token = register))
 
         return OAuthLoginUseCase.Response.NonRegistered(register)
     }

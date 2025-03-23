@@ -7,7 +7,7 @@ import com.bondary.application.member.out.MemberTokenPort
 import com.bondary.member.Member
 import com.bondary.member.MemberAuth
 import com.bondary.member.MemberToken
-import com.bondary.support.CoreException
+import com.bondary.support.exception.CoreException
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,9 +17,9 @@ class MemberCommandService(
     private val memberTokenPort: MemberTokenPort
 ) : AppendMemberUseCase {
     override suspend fun appendMember(command: AppendMemberUseCase.Command): AppendMemberUseCase.Response.Success {
-        if (!memberTokenPort.isExistTokenByToken(command.token)) {
-            throw CoreException.NotFoundData("잘못된 토큰 입니다.")
-        }
+//        if (!memberTokenPort.isExistTokenByToken(command.token)) {
+//            throw CoreException.NotFoundData()
+//        }
         val resolved = memberTokenPort.resolveRegisterToken(command.token)
 
         if (memberAuthInfoPort.isExistsMemberAuthInfo(

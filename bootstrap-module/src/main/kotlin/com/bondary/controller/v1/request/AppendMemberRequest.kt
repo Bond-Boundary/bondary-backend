@@ -1,7 +1,6 @@
 package com.bondary.controller.v1.request
 
 data class AppendMemberRequest(
-    val token: String,
     val introduction: String,
     val schoolName: String,
     val firstMajorName: String,

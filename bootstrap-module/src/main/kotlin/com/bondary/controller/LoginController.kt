@@ -2,9 +2,9 @@ package com.bondary.controller
 
 import com.bondary.application.member.`in`.OAuthLoginUseCase
 import com.bondary.controller.v1.request.OAuthLoginRequest
+import com.bondary.controller.v1.response.OAuthCallBackResponse
 import com.bondary.controller.v1.response.OAuthLoginResponse
-import io.dodn.springboot.core.support.response.ApiResponse
-import org.springframework.http.ResponseEntity
+import com.bondary.support.exception.ApiResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -14,18 +14,15 @@ class LoginController(
     @GetMapping("/oauth/kakao/callback")
     fun kakaoCallback(
         @RequestParam code: String
-    ): ResponseEntity<Map<String, String>> {
-        return ResponseEntity.ok(mapOf(
-            "message" to "인증 코드가 성공적으로 수신되었습니다.",
-            "code" to code
-        ))
+    ): ApiResponse<OAuthCallBackResponse> {
+        return ApiResponse.success(OAuthCallBackResponse.of(code))
     }
 
     @PostMapping("/v1/login/{provider}")
     suspend fun oauthLogin(
         @PathVariable provider: String,
         @RequestBody request: OAuthLoginRequest
-    ) : ApiResponse<OAuthLoginResponse>{
+    ) : ApiResponse<OAuthLoginResponse> {
         val command = OAuthLoginUseCase.Command(
             provider = provider,
             authorizationCode = request.authorizationCode,
