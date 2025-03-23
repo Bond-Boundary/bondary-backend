@@ -22,10 +22,10 @@ class JwtManager(
             claims = jwtClaims,
         )
 
-    fun generateToken(member: Member, JWTTokenType: JwtTokenType): String {
+    fun generateToken(member: Member, jwtTokenType: JwtTokenType): String {
         val jwtClaims = JwtClaimsForMember(
             memberId = member.id.value,
-            JWTTokenType = JWTTokenType
+            jwtTokenType = jwtTokenType
         )
         val payload = getDefaultPayload(jwtClaims, 1000 * 60 * 10 * 24)
         return jwtProvider.createToken(payload, jwtProperties.secretKey)
