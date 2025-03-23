@@ -1,4 +1,4 @@
-package com.bondary.oauth_clients
+package com.bondary.clients.oauth
 
 import reactor.core.publisher.Mono
 

@@ -1,6 +1,6 @@
-package com.bondary.oauth_clients
+package com.bondary.clients.oauth
 
-import com.bondary.oauth_clients.OAuthManager.OAuthClientResponse
+import com.bondary.clients.oauth.OAuthManager.OAuthClientResponse
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType

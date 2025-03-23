@@ -1,9 +1,9 @@
-package com.bondary.oauth_clients
+package com.bondary.clients.oauth
 
-import com.bondary.application.member.OAuthMemberInfo
-import com.bondary.application.member.out.MemberOAuthInfoPort
 import com.bondary.OAuthProvider
 import com.bondary.SocialId
+import com.bondary.application.member.OAuthMemberInfo
+import com.bondary.application.member.out.MemberOAuthInfoPort
 import com.bondary.support.exception.CoreException
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Repository

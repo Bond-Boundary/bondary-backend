@@ -1,4 +1,4 @@
-package com.bondary.oauth_clients
+package com.bondary.clients.oauth
 
 import com.bondary.OAuthProvider
 import org.springframework.beans.factory.annotation.Qualifier
