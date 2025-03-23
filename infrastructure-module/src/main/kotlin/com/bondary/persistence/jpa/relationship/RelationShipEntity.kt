@@ -1,7 +1,7 @@
 package com.bondary.persistence.jpa.relationship
 
 import com.bondary.persistence.jpa.member.entity.MemberEntity
-import com.bondary.persistence.jpa.support.AggregateRoot
+import com.bondary.persistence.jpa.support.AggregateEntity
 import jakarta.persistence.*
 
 @Entity
@@ -18,7 +18,7 @@ class RelationShipEntity(
     @Enumerated(EnumType.STRING)
     @Column(name = "relation_type", nullable = false)
     var relationType: RelationType
-) : AggregateRoot<RelationShipEntity>(id) {
+) : AggregateEntity<RelationShipEntity>(id) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name = "source_id",

@@ -1,13 +1,24 @@
 package com.bondary.persistence.jpa.member.entity
 
-import com.bondary.persistence.jpa.support.AggregateRoot
+import com.bondary.persistence.jpa.support.AggregateEntity
+import com.bondary.persistence.jpa.support.InterestAreaListConverter
 import com.bondary.persistence.jpa.support.StringListConverter
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Convert
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "members")
 class MemberEntity(
     id: String,
+
+    @Column(name = "name", nullable = false)
+    var name: String,
+
+    @Column(name = "profile_image", nullable = false)
+    var profileImage: String,
 
     @Column(name = "introduction", nullable = false)
     var introduction: String,
@@ -21,18 +32,24 @@ class MemberEntity(
     @Column(name = "secondary_major_name")
     var secondaryMajorName: String?,
 
+    @Convert(converter = InterestAreaListConverter::class)
+    @Column(name = "interest_areas", columnDefinition = "text")
+    var interestArea: List<InterestArea>,
+
+    @Column(name = "interest_job")
+    var interestJob: String?,
+
     @Column(name = "instagram")
     var instagram: String?,
 
     @Column(name = "linkedin")
     var linkedin: String?,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "interest_area", nullable = false)
-    var interestArea: InterestArea,
-
     @Convert(converter = StringListConverter::class)
     @Column(name = "etc_links", columnDefinition = "text")
     var etcLinks: List<String>?,
-) : AggregateRoot<MemberEntity>(id) {
+
+    @Column(name = "onboarding_at")
+    val onBoardingAt: LocalDateTime?
+) : AggregateEntity<MemberEntity>(id) {
 }

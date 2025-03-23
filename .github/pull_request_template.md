@@ -2,11 +2,7 @@
 
 - 
 
-#### Changes
-
-- 
-
-#### Screenshot
+#### Screenshot(Optional)
 
 - 
 

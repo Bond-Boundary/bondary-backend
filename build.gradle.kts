@@ -45,6 +45,9 @@ subprojects {
 		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 		implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+		// COROUTINES
+		implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
 		// AWS
 		implementation("io.awspring.cloud:spring-cloud-aws-starter")
 		implementation("io.awspring.cloud:spring-cloud-aws-starter-s3")

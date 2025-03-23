@@ -1,7 +1,7 @@
 package com.bondary.persistence.jpa.recommend_document
 
 import com.bondary.persistence.jpa.member.entity.MemberEntity
-import com.bondary.persistence.jpa.support.AggregateRoot
+import com.bondary.persistence.jpa.support.AggregateEntity
 import jakarta.persistence.*
 
 @Entity
@@ -17,7 +17,7 @@ class RecommendDocumentEntity(
 
     @Column(name = "recommend_reason", length = 500)
     val recommendReason: String,
-) : AggregateRoot<RecommendDocumentEntity>(id) {
+) : AggregateEntity<RecommendDocumentEntity>(id) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name = "source_id",
