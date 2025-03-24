@@ -5,4 +5,5 @@ enum class CoreErrorCode {
     ERROR_1001,
     ERROR_1002,
     ERROR_1003,
+    ERROR_1004,
 }

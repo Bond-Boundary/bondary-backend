@@ -1,33 +1,32 @@
 package com.bondary.support.exception
 
-sealed class CoreException(
+abstract class CoreException(
     open val errorType: CoreErrorType,
-    open val data: Any? = null,
-    message: String = errorType.message
-) : RuntimeException(message) {
+    open val data: String? = null,
+) : RuntimeException(data) {
 
     class NotFoundData(
-        data: Any? = null
+        data: String? = null
     ) : CoreException(CoreErrorType.NOT_FOUND_DATA, data)
 
     class DataAlreadyExists(
-        data: Any? = null
+        data: String? = null
     ) : CoreException(CoreErrorType.DATA_IS_ALREADY_EXIST, data)
 
     class InvalidArgument(
-        data: Any? = null
-    ) :  CoreException(CoreErrorType.INVALID_ARGUMENT, data)
+        data: String? = null
+    ) : CoreException(CoreErrorType.INVALID_ARGUMENT, data)
 
-    class InvalidTokenException(
-        data: Any? = null
-    ) :  CoreException(CoreErrorType.INVALID_TOKEN, data)
+    class ValueIsEmptyException(
+        data: String? = null
+    ) : CoreException(CoreErrorType.VALUE_IS_EMPTY, data)
 
-    class ExpiredTokenException(
-        data: Any? = null
-    ) :  CoreException(CoreErrorType.EXPIRED_TOKEN, data)
+    class ValueLengthException(
+        data: String? = null
+    ) : CoreException(CoreErrorType.VALUE_IS_OVER_LENGTH, data)
 
     class Default(
         override val errorType: CoreErrorType,
-        override val data: Any? = null
+        override val data: String? = null
     ) : CoreException(errorType, data)
 }
