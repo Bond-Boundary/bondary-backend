@@ -1,7 +1,7 @@
 package com.bondary.security
 
 import com.bondary.member.Member
-import com.bondary.support.exception.CoreException
+import com.bondary.member.exception.MemberException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import org.springframework.stereotype.Component
@@ -38,7 +38,7 @@ class JwtManager(
         return resolveToken {
             val jwtPayload = resolve()
             if (jwtPayload.claims.equalsTokenType(JWTTokenType).not()) {
-                throw CoreException.InvalidTokenException("요청 토큰 타입이 올바르지 않습니다.")
+                throw MemberException.InvalidTokenTypeException()
             }
             return@resolveToken jwtPayload
         }
@@ -49,8 +49,8 @@ class JwtManager(
             return resolve()
         } catch (e: Exception) {
             when (e) {
-                is MalformedJwtException -> throw CoreException.InvalidTokenException()
-                is ExpiredJwtException -> throw CoreException.ExpiredTokenException()
+                is MalformedJwtException -> throw MemberException.InvalidTokenException()
+                is ExpiredJwtException -> throw MemberException.ExpiredTokenException()
                 else -> throw e
             }
         }
