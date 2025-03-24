@@ -7,7 +7,7 @@ import com.bondary.support.AggregateDomain
 import com.bondary.support.DomainId
 import java.time.LocalDateTime
 
-class Career private constructor(
+class Career(
     id: DomainId,
     val memberId: DomainId,
     var careerDetails: CareerDetails,
@@ -52,6 +52,45 @@ class Career private constructor(
                 updatedAt = updatedAt
             )
         }
+    }
+
+    fun modifyCareer(
+        title: String?,
+        content: String?,
+        thumbnailImage: String?,
+        careerStart: LocalDateTime?,
+        careerEnd: LocalDateTime?,
+        isProgress: Boolean?,
+        isRepresent: Boolean?
+    ) {
+        if (title != null || content != null || thumbnailImage != null) {
+            val updatedDetails = CareerDetails.createCareerDetails(
+                title = title ?: this.careerDetails.title,
+                content = content ?: this.careerDetails.content,
+                thumbnailImage = thumbnailImage ?: this.careerDetails.thumbnailImage
+            )
+            updateDetails(updatedDetails)
+        }
+
+        if (careerStart != null || careerEnd != null || isProgress != null) {
+            val newIsProgress = isProgress ?: this.careerPeriod.isProgress
+            val newStart = careerStart ?: this.careerPeriod.careerStart
+
+            val newPeriod = when {
+                newIsProgress -> CareerPeriod.createInProgress(newStart)
+                else -> {
+                    val newEnd = careerEnd ?: this.careerPeriod.careerEnd ?: throw CareerException.EndDateRequired()
+                    CareerPeriod.createCompleted(newStart, newEnd)
+                }
+            }
+            updatePeriods(newPeriod)
+        }
+
+        if (isRepresent != null) {
+            if (isRepresent) markAsRepresent()
+            else unmarkAsRepresent()
+        }
+        updateTime()
     }
 
     fun updateDetails(newDetails: CareerDetails) {
