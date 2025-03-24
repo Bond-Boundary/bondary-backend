@@ -4,4 +4,8 @@ import com.bondary.career.Career
 
 interface CareerFunctionPort {
     fun save(career: Career) : String
+
+    fun modify(career: Career) : String
+
+    fun getCareer(careerId: String, memberId: String): Career
 }

@@ -14,9 +14,7 @@ import org.springframework.context.annotation.Import
 		InfraConfig::class
 	],
 )
-class BondaryBackendApplication{
-
-}
+class BondaryBackendApplication
 
 fun main(args: Array<String>) {
 	runApplication<BondaryBackendApplication>(*args)
