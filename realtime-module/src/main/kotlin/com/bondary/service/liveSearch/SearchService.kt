@@ -1,49 +1,62 @@
 package com.bondary.service.liveSearch
 
 import com.bondary.model.User
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.reactive.asFlow
-import kotlinx.coroutines.reactive.awaitFirst
-import kotlinx.coroutines.reactive.awaitFirstOrNull
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Query
-import org.springframework.data.mongodb.core.query.TextCriteria
-import org.springframework.data.mongodb.core.query.TextQuery
+import com.bondary.persistence.jpa.member.entity.MemberEntity
+import com.bondary.persistence.jpa.member.repository.MemberJpaRepository
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
 
 @Service
 class SearchService(
-    private val reactiveMongoTemplate: ReactiveMongoTemplate
+    private val memberRepository: MemberJpaRepository
 ) {
-    suspend fun searchUsers(
-        name: String,
-        limit: Int
-    ): List<User> = coroutineScope {
-        // 정규식을 사용한 검색 (case-insensitive)
-        val criteria = Criteria.where("name").regex(".*$name.*", "i")
-        val query = Query(criteria).limit(limit)
-
-        // 비동기적으로 검색 실행
-        reactiveMongoTemplate.find(query, User::class.java)
-            .asFlow()
-            .toList()
-
-        // 텍스트 인덱스를 사용한 고급 검색의 경우 (MongoDB에 텍스트 인덱스가 설정되어 있어야 함)
-        // val textCriteria = TextCriteria.forDefaultLanguage().matching(name)
-        // val textQuery = TextQuery.queryText(textCriteria).sortByScore().limit(limit)
-        // reactiveMongoTemplate.find(textQuery, User::class.java)
-        //     .asFlow()
-        //     .toList()
+    /**
+     * 이름으로 사용자를 검색하여 리스트로 반환
+     */
+    @Transactional(readOnly = true)
+    fun searchUsers(name: String, limit: Int): Mono<List<User>> {
+        return Mono.fromCallable {
+            val pageable: Pageable = PageRequest.of(0, limit)
+            val members = memberRepository.findByNameContainingIgnoreCase(name, pageable)
+            members.map { mapMemberToUser(it) }
+        }.subscribeOn(Schedulers.boundedElastic())
     }
 
-    // 실시간 스트리밍 검색 - 웹소켓이나 SSE로 클라이언트에 제공할 수 있음
-    fun searchUsersReactive(name: String, limit: Int): Flow<User> {
-        val criteria = Criteria.where("name").regex(".*$name.*", "i")
-        val query = Query(criteria).limit(limit)
+    /**
+     * 이름으로 사용자를 검색하여 실시간 스트림으로 반환 (SSE용)
+     */
+    @Transactional(readOnly = true)
+    fun searchUsersReactive(name: String, limit: Int): Flux<User> {
+        return Flux.defer {
+            val pageable = PageRequest.of(0, limit)
+            val members = memberRepository.findByNameContainingIgnoreCase(name, pageable)
+            Flux.fromIterable(members.map { mapMemberToUser(it) })
+        }.subscribeOn(Schedulers.boundedElastic())
+    }
 
-        return reactiveMongoTemplate.find(query, User::class.java).asFlow()
+    /**
+     * MemberEntity를 User 모델로 변환
+     */
+    private fun mapMemberToUser(member: MemberEntity): User {
+        return User(
+            id = member.id,
+            name = member.name,
+            profileImage = member.profileImage,
+            introduction = member.introduction,
+            schoolName = member.schoolName,
+            firstMajorName = member.firstMajorName,
+            secondaryMajorName = member.secondaryMajorName,
+            interestArea = member.interestArea,
+            interestJob = member.interestJob,
+            instagram = member.instagram,
+            linkedin = member.linkedin,
+            etcLinks = member.etcLinks,
+            onBoardingAt = member.onBoardingAt
+        )
     }
 }

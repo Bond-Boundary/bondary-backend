@@ -14,6 +14,9 @@ dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+    // JPA 의존성 추가
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
     // MongoDB Reactive
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 

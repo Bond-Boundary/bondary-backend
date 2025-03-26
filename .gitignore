@@ -36,3 +36,5 @@ out/
 ### VS Code ###
 .vscode/.DS_Store
 .DS_Store
+/infrastructure-module/src/main/resources/application-infra.yml
+/bootstrap-module/src/main/resources/application.yml
