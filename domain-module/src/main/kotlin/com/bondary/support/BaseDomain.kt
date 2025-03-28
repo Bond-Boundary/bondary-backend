@@ -5,6 +5,9 @@ import java.time.LocalDateTime
 abstract class BaseDomain(
     val id: DomainId = DomainId.generate(),
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime
 ) {
+    protected fun updateTime() {
+        updatedAt = LocalDateTime.now()
+    }
 }

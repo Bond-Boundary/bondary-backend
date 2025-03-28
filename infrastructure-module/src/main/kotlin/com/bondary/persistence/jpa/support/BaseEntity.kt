@@ -29,4 +29,8 @@ abstract class BaseEntity(
     fun delete() {
         entityStatus = EntityStatus.DELETED
     }
+
+    fun update() {
+        this.updatedAt = LocalDateTime.now()
+    }
 }

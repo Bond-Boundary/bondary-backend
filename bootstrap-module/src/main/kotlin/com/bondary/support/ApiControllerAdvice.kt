@@ -30,9 +30,9 @@ class ApiControllerAdvice {
     @ExceptionHandler(CoreException::class)
     fun handleCoreException(e: CoreException): ResponseEntity<ApiResponse<Any>> {
         when (e.errorType.level) {
-            CoreErrorLevel.ERROR -> log.error("CoreApiException: {}", e.errorType.message, e)
-            CoreErrorLevel.WARNING -> log.warn("CoreApiException: {}", e.errorType.message, e)
-            else -> log.info("CoreException: {}", e.errorType.message, e)
+            CoreErrorLevel.ERROR -> log.error("CoreApiException: {}", e.errorType, e)
+            CoreErrorLevel.WARNING -> log.warn("CoreApiException: {}", e.errorType, e)
+            else -> log.info("CoreException: {}", e.errorType, e)
         }
 
         val status = when (e.errorType.kind) {
@@ -40,17 +40,14 @@ class ApiControllerAdvice {
             CoreErrorKind.SERVER_ERROR -> HttpStatus.INTERNAL_SERVER_ERROR
         }
 
-        val apiErrorType = ApiErrorType.SERVER_ERROR
-
         val errorData = mapOf(
             "error_code" to e.errorType.code.name,
-            "error_message" to e.errorType.message,
+            "error_message" to e.data,
             "error_level" to e.errorType.level.name,
-            "data" to e.data
         )
 
         return ResponseEntity(
-            ApiResponse.error(apiErrorType, errorData),
+            ApiResponse.error(e.errorType, errorData),
             status
         )
     }
