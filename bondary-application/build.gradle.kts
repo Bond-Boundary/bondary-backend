@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":domain-module"))
+    implementation(project(":bondary-domain"))
 
     implementation("org.springframework:spring-tx")
 }

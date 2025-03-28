@@ -5,8 +5,8 @@ allOpen {
 }
 
 dependencies {
-    implementation(project(":application-module"))
-    implementation(project(":domain-module"))
+    implementation(project(":bondary-application"))
+    implementation(project(":bondary-domain"))
 
     // JPA
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

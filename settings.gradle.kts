@@ -1,10 +1,10 @@
 rootProject.name = "bondary-backend"
 
 include(
-    "bootstrap-module",
-    "application-module",
-    "domain-module",
-    "infrastructure-module",
+    "bondary-bootstrap",
+    "bondary-application",
+    "bondary-domain",
+    "bondary-infrastructure",
     "realtime-module"
 )
 

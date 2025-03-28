@@ -9,9 +9,9 @@ tasks.withType<Jar> {
 }
 
 dependencies {
-    implementation(project(":application-module"))
-    implementation(project(":domain-module"))
-    implementation(project(":infrastructure-module"))
+    implementation(project(":bondary-application"))
+    implementation(project(":bondary-domain"))
+    implementation(project(":bondary-infrastructure"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
 
