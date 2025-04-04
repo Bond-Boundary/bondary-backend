@@ -14,7 +14,7 @@ class Career(
     var careerPeriod: CareerPeriod,
     var isRepresent: Boolean = false,
     createdAt: LocalDateTime,
-    updatedAt: LocalDateTime,
+    updatedAt: LocalDateTime
 ) : AggregateDomain<Career>(id, createdAt, updatedAt) {
     companion object {
         fun createCareer(
@@ -93,23 +93,28 @@ class Career(
         updateTime()
     }
 
-    fun updateDetails(newDetails: CareerDetails) {
+    fun deleteCareer() {
+        delete()
+    }
+
+    private fun updateDetails(newDetails: CareerDetails) {
         this.careerDetails = newDetails
     }
 
-    fun updatePeriods(newPeriod: CareerPeriod) {
+    private fun updatePeriods(newPeriod: CareerPeriod) {
         this.careerPeriod = newPeriod
     }
 
-    fun markAsRepresent() {
+    private fun markAsRepresent() {
         if (this.isRepresent) return
         this.isRepresent = true
     }
 
-    fun unmarkAsRepresent() {
+    private fun unmarkAsRepresent() {
         if (!this.isRepresent) return
         this.isRepresent = false
     }
+
 
     fun getDuration(): Long = careerPeriod.duration()
 
