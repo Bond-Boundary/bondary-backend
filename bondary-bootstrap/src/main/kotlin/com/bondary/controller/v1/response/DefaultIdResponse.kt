@@ -1,6 +1,7 @@
 package com.bondary.controller.v1.response
 
 import com.bondary.application.career.`in`.CreateCareerUseCase
+import com.bondary.application.career.`in`.DeleteCareerUseCase
 import com.bondary.application.career.`in`.ModifyCareerUseCase
 
 data class DefaultIdResponse(
@@ -11,6 +12,9 @@ data class DefaultIdResponse(
             DefaultIdResponse(response.successId)
 
         fun of(response: ModifyCareerUseCase.Response.Success) : DefaultIdResponse =
+            DefaultIdResponse(response.successId)
+
+        fun of(response: DeleteCareerUseCase.Response.Success) : DefaultIdResponse =
             DefaultIdResponse(response.successId)
     }
 }
