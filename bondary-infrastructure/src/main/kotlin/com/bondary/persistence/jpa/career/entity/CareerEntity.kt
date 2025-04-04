@@ -52,5 +52,6 @@
             this.careerEnd = career.careerPeriod.careerEnd
             this.isProgress = career.careerPeriod.isProgress
             this.isRepresent = career.isRepresent
+            update()
         }
     }
