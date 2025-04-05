@@ -21,7 +21,6 @@ class CareerController(
         @AuthProvider memberId: String,
         @RequestBody request: CreateCareerRequest
     ): ApiResponse<DefaultIdResponse> {
-        request.validate()
         val response = createCareerUseCase.createCareer(
             CreateCareerUseCase.Command(
                 memberId = memberId,
