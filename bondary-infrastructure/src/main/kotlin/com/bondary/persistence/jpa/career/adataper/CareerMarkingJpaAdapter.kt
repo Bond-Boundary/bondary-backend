@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository
 class CareerMarkingJpaAdapter(
     private val careerJpaRepository: CareerJpaRepository
 ) : CareerMarkingFunctionPort {
-    override fun marking(career: Career): String {
-        careerJpaRepository.updateRepresentStatusByIdAndMemberId(
+    override fun updateMarkingRepresent(career: Career): String {
+        careerJpaRepository.updateMarkingRepresentByIdAndMemberId(
             id = career.id.value,
             memberId = career.memberId.value,
             isRepresent = career.isRepresent

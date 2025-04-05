@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 
 interface CareerJpaRepository : JpaRepository<CareerEntity, String> {
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query(
         """
         UPDATE CareerEntity c
@@ -22,7 +22,7 @@ interface CareerJpaRepository : JpaRepository<CareerEntity, String> {
         entityStatus: EntityStatus
     )
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("""
         UPDATE CareerEntity c
         SET c.isRepresent = :isRepresent
@@ -30,7 +30,7 @@ interface CareerJpaRepository : JpaRepository<CareerEntity, String> {
         AND c.memberId = :memberId
         AND c.entityStatus = 'ACTIVE'
     """)
-    fun updateRepresentStatusByIdAndMemberId(
+    fun updateMarkingRepresentByIdAndMemberId(
         id: String,
         memberId: String,
         isRepresent: Boolean

@@ -12,11 +12,22 @@ class CareerMarkingCommandService(
     private val careerFunctionPort: CareerFunctionPort
 ) : MarkingCareerUseCase {
     @Transactional
-    override fun markingCareer(command: MarkingCareerUseCase.Command): MarkingCareerUseCase.Response.Success {
+    override fun executeFor(command: MarkingCareerUseCase.Command.Marking): MarkingCareerUseCase.Response.Success {
+        val successId = executeMarkingFor(command)
+        return MarkingCareerUseCase.Response.Success(successId)
+    }
+
+    @Transactional
+    override fun executeFor(command: MarkingCareerUseCase.Command.UnMarking): MarkingCareerUseCase.Response.Success {
+        val successId = executeMarkingFor(command)
+        return MarkingCareerUseCase.Response.Success(successId)
+    }
+
+    private fun executeMarkingFor(command: MarkingCareerUseCase.Command): String {
         val career = careerFunctionPort.getCareer(command.careerId, command.memberId)
         career.markingAsRepresent(command.isRepresent)
 
-        val successId = careerMarkingFunctionPort.marking(career)
-        return MarkingCareerUseCase.Response.Success(successId)
+        val successId = careerMarkingFunctionPort.executeMarkingRepresent(career)
+        return successId
     }
 }

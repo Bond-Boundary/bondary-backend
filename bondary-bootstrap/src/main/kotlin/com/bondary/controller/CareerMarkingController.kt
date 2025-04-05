@@ -12,13 +12,27 @@ import org.springframework.web.bind.annotation.RestController
 class CareerMarkingController(
     private val markingCareerUseCase: MarkingCareerUseCase
 ) {
-    @PutMapping("/v1/careers/{careerId}/mark")
-    fun markUpRepresent(
+    @PutMapping("/v1/careers/{careerId}/mark-up")
+    fun appendMarkUpRepresent(
         @AuthProvider memberId: String,
         @PathVariable careerId: String,
     ): ApiResponse<DefaultIdResponse> {
-        val response = markingCareerUseCase.markingCareer(
-            MarkingCareerUseCase.Command(
+        val response = markingCareerUseCase.executeFor(
+            MarkingCareerUseCase.Command.Marking(
+                memberId = memberId,
+                careerId = careerId
+            )
+        )
+        return ApiResponse.success(DefaultIdResponse.of(response))
+    }
+
+    @PutMapping("/v1/careers/{careerId}/remove-mark-up")
+    fun removeMarkUpRepresent(
+        @AuthProvider memberId: String,
+        @PathVariable careerId: String,
+    ): ApiResponse<DefaultIdResponse> {
+        val response = markingCareerUseCase.executeFor(
+            MarkingCareerUseCase.Command.UnMarking(
                 memberId = memberId,
                 careerId = careerId
             )
