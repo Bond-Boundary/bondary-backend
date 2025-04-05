@@ -97,6 +97,17 @@ class Career(
         delete()
     }
 
+    fun markingAsRepresent(isRepresent: Boolean) {
+        this.isRepresent = isRepresent
+    }
+
+    fun getDuration(): Long = careerPeriod.duration()
+
+    fun isActive(): Boolean {
+        val endDate = careerPeriod.careerEnd
+        return careerPeriod.isProgress || (endDate != null && endDate.isAfter(LocalDateTime.now()))
+    }
+
     private fun updateDetails(newDetails: CareerDetails) {
         this.careerDetails = newDetails
     }
@@ -113,13 +124,5 @@ class Career(
     private fun unmarkAsRepresent() {
         if (!this.isRepresent) return
         this.isRepresent = false
-    }
-
-
-    fun getDuration(): Long = careerPeriod.duration()
-
-    fun isActive(): Boolean {
-        val endDate = careerPeriod.careerEnd
-        return careerPeriod.isProgress || (endDate != null && endDate.isAfter(LocalDateTime.now()))
     }
 }

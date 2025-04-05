@@ -21,6 +21,20 @@ interface CareerJpaRepository : JpaRepository<CareerEntity, String> {
         memberId: String,
         entityStatus: EntityStatus
     )
+
+    @Modifying
+    @Query("""
+        UPDATE CareerEntity c
+        SET c.isRepresent = :isRepresent
+        WHERE c.id = :id
+        AND c.memberId = :memberId
+        AND c.entityStatus = 'ACTIVE'
+    """)
+    fun updateRepresentStatusByIdAndMemberId(
+        id: String,
+        memberId: String,
+        isRepresent: Boolean
+    )
 }
 
 fun CareerJpaRepository.deleteByMemberIdAndId(
