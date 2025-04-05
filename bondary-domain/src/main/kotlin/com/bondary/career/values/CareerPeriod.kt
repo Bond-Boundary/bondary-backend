@@ -12,6 +12,8 @@ data class CareerPeriod(
         if (!isProgress) {
             requireNotNull(careerEnd) { CareerException.EndDateRequired() }
             require(!careerEnd.isBefore(careerStart)) { CareerException.InvalidDateRange() }
+        } else {
+            require(careerEnd == null) { CareerException.EndDateNotRequired()}
         }
     }
 

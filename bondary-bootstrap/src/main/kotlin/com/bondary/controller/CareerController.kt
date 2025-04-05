@@ -8,6 +8,7 @@ import com.bondary.controller.v1.request.ModifyCareerRequest
 import com.bondary.controller.v1.response.DefaultIdResponse
 import com.bondary.support.auth.AuthProvider
 import com.bondary.support.exception.ApiResponse
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -19,7 +20,7 @@ class CareerController(
     @PostMapping("/v1/careers")
     fun createCareer(
         @AuthProvider memberId: String,
-        @RequestBody request: CreateCareerRequest
+        @Valid @RequestBody request: CreateCareerRequest
     ): ApiResponse<DefaultIdResponse> {
         val response = createCareerUseCase.createCareer(
             CreateCareerUseCase.Command(
@@ -40,7 +41,7 @@ class CareerController(
     fun modifyCareer(
         @AuthProvider memberId: String,
         @PathVariable careerId: String,
-        @RequestBody request: ModifyCareerRequest
+        @Valid @RequestBody request: ModifyCareerRequest
     ): ApiResponse<DefaultIdResponse> {
         val response = modifyCareerUseCase.modifyCareer(
             ModifyCareerUseCase.Command(
