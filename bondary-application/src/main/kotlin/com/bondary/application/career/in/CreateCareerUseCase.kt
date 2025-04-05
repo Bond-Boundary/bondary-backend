@@ -1,5 +1,6 @@
 package com.bondary.application.career.`in`
 
+import com.bondary.HasSuccessId
 import java.time.LocalDateTime
 
 interface CreateCareerUseCase {
@@ -18,7 +19,7 @@ interface CreateCareerUseCase {
 
     sealed class Response {
         data class Success(
-            val successId: String
-        ) : Response()
+            override val successId: String
+        ) : Response(), HasSuccessId
     }
 }
