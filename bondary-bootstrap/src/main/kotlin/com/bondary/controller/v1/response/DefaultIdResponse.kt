@@ -1,20 +1,12 @@
 package com.bondary.controller.v1.response
 
-import com.bondary.application.career.`in`.CreateCareerUseCase
-import com.bondary.application.career.`in`.DeleteCareerUseCase
-import com.bondary.application.career.`in`.ModifyCareerUseCase
+import com.bondary.HasSuccessId
 
 data class DefaultIdResponse(
     val successId: String
 ) {
     companion object{
-        fun of(response: CreateCareerUseCase.Response.Success) : DefaultIdResponse =
-            DefaultIdResponse(response.successId)
-
-        fun of(response: ModifyCareerUseCase.Response.Success) : DefaultIdResponse =
-            DefaultIdResponse(response.successId)
-
-        fun of(response: DeleteCareerUseCase.Response.Success) : DefaultIdResponse =
+        fun of(response: HasSuccessId) : DefaultIdResponse =
             DefaultIdResponse(response.successId)
     }
 }

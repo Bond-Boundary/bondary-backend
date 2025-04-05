@@ -1,7 +1,9 @@
 package com.bondary.controller.v1.request
 
+import com.bondary.support.validator.ValidCareerPeriod
 import java.time.LocalDateTime
 
+@ValidCareerPeriod
 data class ModifyCareerRequest(
     val thumbnailImage: String?,
     val title: String?,
