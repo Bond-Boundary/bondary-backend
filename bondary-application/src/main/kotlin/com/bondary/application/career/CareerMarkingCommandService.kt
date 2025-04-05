@@ -27,7 +27,7 @@ class CareerMarkingCommandService(
         val career = careerFunctionPort.getCareer(command.careerId, command.memberId)
         career.markingAsRepresent(command.isRepresent)
 
-        val successId = careerMarkingFunctionPort.executeMarkingRepresent(career)
+        val successId = careerMarkingFunctionPort.updateMarkingRepresent(career)
         return successId
     }
 }
